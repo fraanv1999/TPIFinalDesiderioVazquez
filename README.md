@@ -1,4 +1,4 @@
-# TPIFinalDesiderioVazquez
+# TPI Final - Desiderio, Vazquez
 
 # Trabajo Final — Tecnicatura Universitaria en Programación a Distancia (UTN)
 ## Definición del Problema, Alcance y Plan de Trabajo del Proyecto
