@@ -109,6 +109,12 @@ Cargar Excel → identificar columnas → mapear (manual/automático por perfil)
 
 ---
 
+## Anexo: dataset de ejemplos
+
+En la carpeta `dataset-example` del repositorio se encontraran 3 excels de ejemplos de cada caso de resolución del problema del problema que tenían con la plataforma anterior y el procesamiento de los excels de los proveedores.
+- El procedimiento que se realizaba manualmente para poder cargar un excel en la plataforma anterior. `dataset-previous-platform`
+- Los excels que envían los proveedores. `dataset-providers`
+
 ## Anexo: schema de validación — `productos_normalizados`
 
 ```javascript
