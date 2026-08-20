@@ -87,11 +87,11 @@ Cargar Excel → identificar columnas → mapear (manual/automático por perfil)
 | :---: | :--- |
 | 1–2 | Arquitectura + prueba mínima de deployment de punta a punta |
 | 3–6 | Motor de mapeo (Opción 2: carga, detección de columnas, mapeo guiado, perfiles) |
-| 7–9 | Validación, guardado del resultado homologado, visualización |
-| 10 | Opción 1: import directo por plantilla/spec conocida |
-| 11 | Login de usuarios + historial de importaciones |
-| 12–13 | Testing, deployment final, documentación |
-| 14 | Buffer y entrega (21/11) |
+| 7-8 | Validación, guardado del resultado homologado, visualización |
+| 9 | Opción 1: import directo por plantilla/spec conocida |
+| 10 | Login de usuarios + historial de importaciones |
+| 11 | Testing, deployment final, documentación |
+| 12 | Buffer y entrega (21/11) |
 
 ---
 
