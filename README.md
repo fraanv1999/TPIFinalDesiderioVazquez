@@ -26,7 +26,7 @@ Dos mecanismos de ingesta:
 
 ---
 
-## 3. Qué significa "homologar" (alcance acotado para el MVP)
+## 3. Homologación de datos
 
 Homologar = **relacionar columnas equivalentes entre el Excel del proveedor y el modelo de datos destino, y normalizar el formato de esos valores** (separador decimal, fechas, etc.). No incluye, en esta versión:
 
