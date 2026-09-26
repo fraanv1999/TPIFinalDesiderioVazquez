@@ -1,4 +1,5 @@
 # TPI Final — Desiderio, Vazquez
+
 Tecnicatura Universitaria en Programación a Distancia (UTN)
 
 ## Integrantes
@@ -22,6 +23,10 @@ flowchart LR
     C --> E[Reporte de errores]
 ```
 
+## Demo del Frontend
+
+![Demo del prototipo](demo-page/gif-page.gif)
+
 ## Tecnologías
 
 | Capa | Tecnología |
@@ -41,16 +46,29 @@ flowchart LR
 ```
 ├── database/          scripts SQL (schema.sql, seed.sql)
 ├── dataset-example/   Excels reales de proveedores y de la plataforma anterior
+├── frontend/           demo de React + Tailwind (Vite)
 └── docs/              documentación
 ```
 
 ## Instalación
 
-Base de datos:
+### Base de datos
 
 ```bash
 psql -d tpi_final -f database/schema.sql
 psql -d tpi_final -f database/seed.sql
 ```
 
-Las instrucciones del backend y el frontend se agregan cuando esté el código.
+### Frontend (demo)
+
+```bash
+cd frontend
+npm install
+npm run dev
+```
+
+Abrí `http://localhost:5173` en el navegador. Es una demo de interfaz con datos simulados (sin conexión a backend todavía).
+
+### Backend
+
+Se agrega cuando esté el código.
