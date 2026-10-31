@@ -4,9 +4,8 @@
 INSERT INTO usuario (nombre, email, password_hash, rol)
 VALUES ('Administrador', 'admin@tpi.local', '<bcrypt>', 'ADMIN');
 
--- 1. Formato de importación de Administralo (sistema destino real). Campos con id 1..11.
---    No se exportan columnas de porcentaje: el modelo los guarda como fracción y Administralo como 21.
-INSERT INTO formato_destino (nombre) VALUES ('administralo');
+
+INSERT INTO formato_destino (nombre) VALUES ('organizalo');
 
 INSERT INTO campo_destino (formato_destino_id, clave, etiqueta, tipo_dato, obligatorio, exportado, orden)
 SELECT 1, c.clave, c.etiqueta, c.tipo::tipo_dato, c.obl, c.exp, c.orden
@@ -106,8 +105,7 @@ VALUES (3, 1, 15, 'SUMAR_PORCENTAJE', 14, NULL, 0.04),  -- ingreso bruto = costo
        (3, 4, 18, 'SUMAR_CAMPO',      16, 17,   NULL),  -- costo + iva   = ganancia + iva
        (3, 5, 20, 'SUMAR_PORCENTAJE', 18, NULL, 0.30);  -- precio venta  = costo + iva + 30 %
 
--- Bulones: IIBB 4 %, ganancia 40 %, IVA 10,5 % sobre el COSTO (opción válida, Administralo la llama
--- "base costo"), venta +70 %.
+-- Bulones: IIBB 4 %, ganancia 40 %, IVA 10,5 % sobre el COSTO (opción válida), venta +70 %.
 INSERT INTO regla_calculo (perfil_id, orden, campo_resultado_id, operacion, campo_base_id, campo_secundario_id, valor)
 VALUES (4, 1, 15, 'SUMAR_PORCENTAJE', 14, NULL, 0.04),
        (4, 2, 16, 'SUMAR_PORCENTAJE', 15, NULL, 0.40),

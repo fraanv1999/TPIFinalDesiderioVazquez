@@ -94,13 +94,13 @@ erDiagram
 
 | Formato | Uso |
 | --- | --- |
-| `administralo` | Sistema destino real: el importador de productos de Administralo (Codigo, Nombre, Descripcion, Categoria, Stock, Precio, Ingresos brutos, Ganancia, IVA, Precio + IVA). `precio_costo` es auxiliar: se usa en los cálculos y no se exporta |
+| `organizalo` | Sistema destino: el importador de productos de Organizalo (Codigo, Nombre, Descripcion, Categoria, Stock, Precio, Ingresos brutos, Ganancia, IVA, Precio + IVA). `precio_costo` es auxiliar: se usa en los cálculos y no se exporta |
 | `plataforma_anterior` | Planilla que se completaba a mano. Se usa como referencia para comprobar los cálculos |
 
 ## Decisiones
 
 - **Un perfil, una hoja.** Un proveedor puede tener varios perfiles si su workbook trae varias listas (por ejemplo, `LISTAS CUENTA 2` tiene siete hojas con estructuras distintas).
-- **Porcentajes como fracción:** `0.04` = 4 %, igual en la base, la API, el motor y el frontend. La interfaz puede mostrar "4 %", pero guarda y envía `0.04`. El formato `administralo` no exporta columnas de porcentaje, así esa conversión no se mezcla con el modelo.
+- **Porcentajes como fracción:** `0.04` = 4 %, igual en la base, la API, el motor y el frontend. La interfaz puede mostrar "4 %", pero guarda y envía `0.04`. El formato `organizalo` no exporta columnas de porcentaje, así esa conversión no se mezcla con el modelo.
 - **Reglas por proveedor:** los porcentajes de un proveedor no se copian a otro. Ferretería y Paint Roller tienen una regla provisoria y explícita (`precio = costo`) hasta confirmar sus porcentajes con el negocio.
 - **Cambio de formato:** cada `encabezado_esperado` se compara con el archivo. Cada diferencia queda en `diferencia_estructura` con su tipo (ver [Módulos](modulos.md#control-de-estructura)). Si hay alguna bloqueante, la importación queda `RECHAZADA` y no se procesa ninguna fila.
 - **Encabezado desplazado:** `margen_encabezado` acepta los mismos encabezados unas filas más arriba o más abajo (LSTPRE los trae en la fila 7 o en la 8 según la versión). Se informa como aviso y `fila_inicio_datos` se corre lo mismo.
