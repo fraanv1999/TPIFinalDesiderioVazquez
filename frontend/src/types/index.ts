@@ -36,17 +36,6 @@ export interface PerfilImportacion {
   mapeoColumnas: ReglaMapeo[];
 }
 
-export interface FilaProcesada {
-  id: number;
-  filaOriginal: number;
-  codigo: string;
-  descripcion: string;
-  costoProveedor: number;
-  precioDestino: number;
-  esValida: boolean;
-  motivoError?: string;
-}
-
 export interface ImportacionHistorial {
   id: string;
   fecha: string;
