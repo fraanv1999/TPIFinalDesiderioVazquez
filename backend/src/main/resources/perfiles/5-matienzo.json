@@ -1,0 +1,113 @@
+{
+  "id": "matienzo-corregido",
+  "proveedor": "Matienzo",
+  "nombre": "Corregido",
+  "formato": "plataforma_anterior",
+  "hoja": "Hoja1",
+  "filaEncabezado": 1,
+  "margenEncabezado": 0,
+  "filaInicioDatos": 3,
+  "campoClave": "codigo",
+  "campoCategoria": null,
+  "columnas": [
+    {
+      "columna": "A",
+      "encabezado": "codigo",
+      "campo": "codigo",
+      "transformaciones": [
+        "TRIM"
+      ]
+    },
+    {
+      "columna": "B",
+      "encabezado": "producto",
+      "campo": "producto",
+      "transformaciones": [
+        "TRIM"
+      ]
+    },
+    {
+      "columna": "C",
+      "encabezado": "precio de costo",
+      "campo": "precio_costo",
+      "transformaciones": [
+        "A_DECIMAL"
+      ]
+    },
+    {
+      "columna": "D",
+      "encabezado": "ingreso bruto",
+      "campo": null,
+      "transformaciones": []
+    },
+    {
+      "columna": "E",
+      "encabezado": "ganancia",
+      "campo": null,
+      "transformaciones": []
+    },
+    {
+      "columna": "F",
+      "encabezado": "iva",
+      "campo": null,
+      "transformaciones": []
+    },
+    {
+      "columna": "G",
+      "encabezado": "costo + iva",
+      "campo": null,
+      "transformaciones": []
+    },
+    {
+      "columna": "H",
+      "encabezado": "stock",
+      "campo": "stock",
+      "transformaciones": [
+        "A_ENTERO"
+      ]
+    },
+    {
+      "columna": "I",
+      "encabezado": "% ganancia",
+      "campo": null,
+      "transformaciones": []
+    }
+  ],
+  "reglas": [
+    {
+      "resultado": "ingreso_bruto",
+      "operacion": "SUMAR_PORCENTAJE",
+      "base": "precio_costo",
+      "secundario": null,
+      "valor": 0.04
+    },
+    {
+      "resultado": "ganancia",
+      "operacion": "SUMAR_PORCENTAJE",
+      "base": "ingreso_bruto",
+      "secundario": null,
+      "valor": 0.3
+    },
+    {
+      "resultado": "iva",
+      "operacion": "MULTIPLICAR",
+      "base": "ganancia",
+      "secundario": null,
+      "valor": 0.21
+    },
+    {
+      "resultado": "costo_mas_iva",
+      "operacion": "SUMAR_CAMPO",
+      "base": "ganancia",
+      "secundario": "iva",
+      "valor": null
+    },
+    {
+      "resultado": "precio_venta",
+      "operacion": "SUMAR_PORCENTAJE",
+      "base": "costo_mas_iva",
+      "secundario": null,
+      "valor": 0.6
+    }
+  ]
+}

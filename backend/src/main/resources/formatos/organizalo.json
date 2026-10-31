@@ -1,0 +1,82 @@
+{
+  "nombre": "organizalo",
+  "campos": [
+    {
+      "clave": "codigo",
+      "etiqueta": "Codigo",
+      "tipo": "TEXTO",
+      "obligatorio": false,
+      "exportado": true
+    },
+    {
+      "clave": "nombre",
+      "etiqueta": "Nombre",
+      "tipo": "TEXTO",
+      "obligatorio": true,
+      "exportado": true
+    },
+    {
+      "clave": "descripcion",
+      "etiqueta": "Descripcion",
+      "tipo": "TEXTO",
+      "obligatorio": false,
+      "exportado": true
+    },
+    {
+      "clave": "categoria",
+      "etiqueta": "Categoria",
+      "tipo": "TEXTO",
+      "obligatorio": false,
+      "exportado": true
+    },
+    {
+      "clave": "stock",
+      "etiqueta": "Stock",
+      "tipo": "ENTERO",
+      "obligatorio": false,
+      "exportado": true
+    },
+    {
+      "clave": "precio_costo",
+      "etiqueta": "Precio de costo",
+      "tipo": "DECIMAL",
+      "obligatorio": true,
+      "exportado": false
+    },
+    {
+      "clave": "ingresos_brutos",
+      "etiqueta": "Ingresos brutos",
+      "tipo": "DECIMAL",
+      "obligatorio": false,
+      "exportado": true
+    },
+    {
+      "clave": "ganancia",
+      "etiqueta": "Ganancia",
+      "tipo": "DECIMAL",
+      "obligatorio": false,
+      "exportado": true
+    },
+    {
+      "clave": "iva",
+      "etiqueta": "IVA",
+      "tipo": "DECIMAL",
+      "obligatorio": false,
+      "exportado": true
+    },
+    {
+      "clave": "precio_mas_iva",
+      "etiqueta": "Precio + IVA",
+      "tipo": "DECIMAL",
+      "obligatorio": false,
+      "exportado": true
+    },
+    {
+      "clave": "precio",
+      "etiqueta": "Precio",
+      "tipo": "DECIMAL",
+      "obligatorio": true,
+      "exportado": true
+    }
+  ]
+}

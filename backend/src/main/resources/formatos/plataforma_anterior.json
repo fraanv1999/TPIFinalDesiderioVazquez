@@ -1,0 +1,68 @@
+{
+  "nombre": "plataforma_anterior",
+  "campos": [
+    {
+      "clave": "codigo",
+      "etiqueta": "codigo",
+      "tipo": "TEXTO",
+      "obligatorio": true,
+      "exportado": true
+    },
+    {
+      "clave": "producto",
+      "etiqueta": "producto",
+      "tipo": "TEXTO",
+      "obligatorio": true,
+      "exportado": true
+    },
+    {
+      "clave": "precio_costo",
+      "etiqueta": "precio de costo",
+      "tipo": "DECIMAL",
+      "obligatorio": true,
+      "exportado": true
+    },
+    {
+      "clave": "ingreso_bruto",
+      "etiqueta": "ingreso bruto",
+      "tipo": "DECIMAL",
+      "obligatorio": false,
+      "exportado": true
+    },
+    {
+      "clave": "ganancia",
+      "etiqueta": "ganancia",
+      "tipo": "DECIMAL",
+      "obligatorio": false,
+      "exportado": true
+    },
+    {
+      "clave": "iva",
+      "etiqueta": "iva",
+      "tipo": "DECIMAL",
+      "obligatorio": false,
+      "exportado": true
+    },
+    {
+      "clave": "costo_mas_iva",
+      "etiqueta": "costo + iva",
+      "tipo": "DECIMAL",
+      "obligatorio": false,
+      "exportado": true
+    },
+    {
+      "clave": "stock",
+      "etiqueta": "stock",
+      "tipo": "ENTERO",
+      "obligatorio": false,
+      "exportado": true
+    },
+    {
+      "clave": "precio_venta",
+      "etiqueta": "% ganancia",
+      "tipo": "DECIMAL",
+      "obligatorio": false,
+      "exportado": true
+    }
+  ]
+}

@@ -33,12 +33,12 @@ final class Conversor {
         }
         return switch (campo.tipo()) {
             case TEXTO -> valor instanceof BigDecimal n ? n.toPlainString() : valor;
-            case DECIMAL -> numero(valor, transformaciones.contains(Transformacion.A_DECIMAL), campo);
-            case ENTERO -> entero(numero(valor, transformaciones.contains(Transformacion.A_ENTERO), campo), campo);
+            case DECIMAL -> numero(valor, transformaciones.contains(Transformacion.A_DECIMAL), campo, "un número");
+            case ENTERO -> entero(numero(valor, transformaciones.contains(Transformacion.A_ENTERO), campo, "un número entero"), campo);
         };
     }
 
-    private static BigDecimal numero(Object valor, boolean aceptaTexto, CampoDestino campo)
+    private static BigDecimal numero(Object valor, boolean aceptaTexto, CampoDestino campo, String esperado)
             throws ValorInvalidoException {
         if (valor instanceof BigDecimal n) {
             return n;
@@ -49,7 +49,7 @@ final class Conversor {
             if (DECIMAL_CON_COMA.matcher(s).matches()) return new BigDecimal(s.replace(',', '.'));
             if (DECIMAL_CON_PUNTO.matcher(s).matches()) return new BigDecimal(s);
         }
-        throw new ValorInvalidoException(campo.etiqueta() + ": '" + valor + "' no es un número");
+        throw new ValorInvalidoException(campo.etiqueta() + ": '" + valor + "' no es " + esperado);
     }
 
     private static BigDecimal entero(BigDecimal n, CampoDestino campo) throws ValorInvalidoException {

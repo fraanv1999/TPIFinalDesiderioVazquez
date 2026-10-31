@@ -1,0 +1,81 @@
+{
+  "id": "paint-roller",
+  "proveedor": "Paint Roller",
+  "nombre": "Lista mayorista",
+  "formato": "organizalo",
+  "hoja": " Paint Roller ",
+  "filaEncabezado": 24,
+  "margenEncabezado": 3,
+  "filaInicioDatos": 25,
+  "campoClave": "codigo",
+  "campoCategoria": "categoria",
+  "columnas": [
+    {
+      "columna": "A",
+      "encabezado": "Producto",
+      "campo": "nombre",
+      "transformaciones": [
+        "TRIM",
+        "RELLENAR_ABAJO"
+      ]
+    },
+    {
+      "columna": "B",
+      "encabezado": "Codigo",
+      "campo": "codigo",
+      "transformaciones": [
+        "TRIM"
+      ]
+    },
+    {
+      "columna": "C",
+      "encabezado": "Medida",
+      "campo": "descripcion",
+      "transformaciones": [
+        "TRIM"
+      ]
+    },
+    {
+      "columna": "D",
+      "encabezado": "Bulto",
+      "campo": null,
+      "transformaciones": []
+    },
+    {
+      "columna": "E",
+      "encabezado": "Aclaracion",
+      "campo": null,
+      "transformaciones": []
+    },
+    {
+      "columna": "F",
+      "encabezado": "Precio lista",
+      "campo": "precio_costo",
+      "transformaciones": [
+        "A_DECIMAL"
+      ]
+    },
+    {
+      "columna": "G",
+      "encabezado": "Ultima actualizacion",
+      "campo": null,
+      "transformaciones": []
+    }
+  ],
+  "reglas": [
+    {
+      "resultado": "nombre",
+      "operacion": "CONCATENAR",
+      "base": "nombre",
+      "secundario": "descripcion",
+      "valor": null
+    },
+    {
+      "resultado": "precio",
+      "operacion": "COPIAR",
+      "base": "precio_costo",
+      "secundario": null,
+      "valor": null
+    }
+  ]
+}

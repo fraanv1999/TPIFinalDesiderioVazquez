@@ -1,0 +1,59 @@
+{
+  "id": "ferreteria-lstpre",
+  "proveedor": "Ferretería",
+  "nombre": "Lista general",
+  "formato": "organizalo",
+  "hoja": "LSTPRE",
+  "filaEncabezado": 7,
+  "margenEncabezado": 3,
+  "filaInicioDatos": 8,
+  "campoClave": "codigo",
+  "campoCategoria": "categoria",
+  "columnas": [
+    {
+      "columna": "A",
+      "encabezado": "CODIGO",
+      "campo": "codigo",
+      "transformaciones": [
+        "TRIM"
+      ]
+    },
+    {
+      "columna": "B",
+      "encabezado": "DESCRIP",
+      "campo": "nombre",
+      "transformaciones": [
+        "TRIM"
+      ]
+    },
+    {
+      "columna": "C",
+      "encabezado": "PRECIO",
+      "campo": "precio_costo",
+      "transformaciones": [
+        "A_DECIMAL"
+      ]
+    },
+    {
+      "columna": "D",
+      "encabezado": "CON_IVA",
+      "campo": null,
+      "transformaciones": []
+    },
+    {
+      "columna": "E",
+      "encabezado": "TIP_LST",
+      "campo": null,
+      "transformaciones": []
+    }
+  ],
+  "reglas": [
+    {
+      "resultado": "precio",
+      "operacion": "COPIAR",
+      "base": "precio_costo",
+      "secundario": null,
+      "valor": null
+    }
+  ]
+}
