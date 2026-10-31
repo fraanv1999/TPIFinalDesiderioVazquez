@@ -112,7 +112,7 @@ export default function PerfilesImportacion() {
                           <td className="px-3 py-2 font-mono text-slate-700">{m.columnaOrigen}</td>
                           <td className="px-3 py-2">
                             <span className="inline-block rounded bg-slate-100 px-2 py-0.5 font-medium text-slate-800">
-                              {m.operacion} {m.valorParametro ? `(${m.valorParametro}%)` : ''}
+                              {m.operacion} {m.valorParametro !== undefined ? `(${(m.valorParametro * 100).toLocaleString('es-AR')} %)` : ''}
                             </span>
                           </td>
                           <td className="px-3 py-2 font-mono font-semibold text-blue-700">{m.columnaDestino}</td>
