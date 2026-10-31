@@ -1,16 +1,10 @@
 export type SeccionApp = 'dashboard' | 'proveedores' | 'perfiles' | 'asistente';
 
-export type FormatoArchivo = 'xlsx' | 'csv';
 export type EstadoEntidad = 'activo' | 'inactivo';
 
 export interface Proveedor {
   id: string;
   nombre: string;
-  cuit: string;
-  contactoNombre: string;
-  email: string;
-  telefono: string;
-  formatoArchivo: FormatoArchivo;
   estado: EstadoEntidad;
 }
 
@@ -28,7 +22,8 @@ export interface ReglaMapeo {
   columnaOrigen: string;
   columnaDestino: string;
   operacion: TipoOperacion;
-  valorParametro?: string;
+  /** Fracción, igual que en la API y la base: 0.5 = 50 %. */
+  valorParametro?: number;
 }
 
 export interface PerfilImportacion {
