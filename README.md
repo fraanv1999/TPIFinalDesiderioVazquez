@@ -25,7 +25,7 @@ flowchart LR
 
 ## Demo del Frontend
 
-![Demo del prototipo](demo-page/gif-page.gif)
+![Demo del prototipo](frontend/gif-page.gif)
 
 ## Tecnologías
 
@@ -47,8 +47,7 @@ flowchart LR
 ├── backend/           API REST y motor de transformación (Spring Boot)
 ├── database/          scripts SQL (schema.sql, seed.sql)
 ├── dataset-example/   Excels reales de proveedores y de la plataforma anterior
-├── demo-page/         prototipo del frontend (datos simulados)
-├── frontend/           demo de React + Tailwind (Vite)
+├── frontend/          frontend React + Tailwind (Vite), conectado a la API
 └── docs/              documentación
 ```
 
@@ -61,7 +60,25 @@ psql -d tpi_final -f database/schema.sql
 psql -d tpi_final -f database/seed.sql
 ```
 
-### Frontend (demo)
+### Backend (requiere Java 17)
+
+```bash
+cd backend
+./mvnw test             # pruebas, incluida la vista previa de LSTPRE
+./mvnw spring-boot:run  # API en http://localhost:8080
+```
+
+| Método | Ruta | Qué hace |
+| --- | --- | --- |
+| `GET` | `/api/perfiles` | Lista los perfiles |
+| `GET` | `/api/perfiles/{id}` | Perfil completo: columnas, transformaciones y reglas |
+| `POST` | `/api/importaciones/preview` | Vista previa. Multipart con `perfil` (por ejemplo `ferreteria-lstpre`) y `archivo` |
+
+Por ahora los perfiles se leen de `backend/src/main/resources/perfiles` (reflejan `seed.sql`); pasan a la base de datos en el bloque 4.
+
+### Frontend
+
+Con el backend corriendo:
 
 ```bash
 cd frontend
@@ -69,8 +86,4 @@ npm install
 npm run dev
 ```
 
-Abrí `http://localhost:5173` en el navegador. Es una demo de interfaz con datos simulados (sin conexión a backend todavía).
-
-### Backend
-
-Se agrega cuando esté el código.
+Abrí `http://localhost:5173`. Las pantallas de **Perfiles** y **Asistente de importación** usan la API (subís un Excel real y ves la vista previa). Proveedores y el panel siguen con datos simulados hasta el bloque 4. Para otra URL del backend, copiá `.env.example` a `.env` y cambiá `VITE_API_URL`.

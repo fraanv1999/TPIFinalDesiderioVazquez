@@ -1,4 +1,4 @@
-import type { Proveedor, PerfilImportacion, ImportacionHistorial, FilaProcesada } from '../types';
+import type { Proveedor, PerfilImportacion, ImportacionHistorial } from '../types';
 
 export const PROVEEDORES: Proveedor[] = [
   {
@@ -81,15 +81,4 @@ export const IMPORTACIONES: ImportacionHistorial[] = [
     filasError: 0,
     estado: 'completado',
   },
-];
-
-export const FILAS_PREVIA_EJEMPLO: FilaProcesada[] = [
-  { id: 1, filaOriginal: 4, codigo: 'K4002', descripcion: 'KALLAY 4002', costoProveedor: 19100, precioDestino: 46869.11, esValida: true },
-  { id: 2, filaOriginal: 5, codigo: 'K4003', descripcion: 'KALLAY 4003', costoProveedor: 19100, precioDestino: 46869.11, esValida: true },
-  { id: 3, filaOriginal: 6, codigo: 'PASACRUZ', descripcion: 'PASADOR CERRO CRUZ', costoProveedor: 9800, precioDestino: 24048.02, esValida: true },
-  { id: 4, filaOriginal: 7, codigo: 'K4006', descripcion: 'KALLAY 4006', costoProveedor: 14500.8, precioDestino: 35583.22, esValida: true },
-  { id: 5, filaOriginal: 14, codigo: 'K5002', descripcion: 'kallay 5002', costoProveedor: 27067.5, precioDestino: 66420.40, esValida: false, motivoError: 'Stock: "10KG" no es un número entero' },
-  { id: 6, filaOriginal: 15, codigo: '', descripcion: 'Cerradura sin código asignado', costoProveedor: 15232.5, precioDestino: 37378.73, esValida: false, motivoError: 'Código de producto ausente o nulo' },
-  { id: 7, filaOriginal: 16, codigo: 'K4015', descripcion: 'Kallay 4015', costoProveedor: 19353.6, precioDestino: 47491.41, esValida: true },
-  { id: 8, filaOriginal: 18, codigo: 'S525', descripcion: 'star 525', costoProveedor: 0, precioDestino: 0, esValida: false, motivoError: 'Precio de costo igual a 0 o no numérico' },
 ];
