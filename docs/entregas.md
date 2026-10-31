@@ -57,4 +57,4 @@ Al revisar más listas reales de la ferretería (agosto a octubre) aparecieron c
 - LSTPRE trae los encabezados en la fila 7 o en la 8 según la versión: `margen_encabezado`.
 - Paint Roller pone el nombre del producto una vez por grupo, en celdas combinadas: `RELLENAR_ABAJO`.
 - Fenix arrastra fórmulas que dan 0 en filas sin producto: un 0 cuenta como vacío al clasificar.
-- El sistema destino real es el importador de Administralo: nuevo formato destino `administralo`.
+- El sistema destino real es el importador de productos de Organizalo: nuevo formato destino `organizalo`.
