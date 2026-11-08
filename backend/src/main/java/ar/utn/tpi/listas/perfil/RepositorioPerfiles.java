@@ -65,8 +65,15 @@ public class RepositorioPerfiles {
                 throw new PerfilInvalidoException(p.id(), "la columna " + m.columna() + " apunta a un campo inexistente: " + m.campo());
             }
         }
+        if (p.margenEncabezado() < 0 || p.margenEncabezado() > 5) {
+            throw new PerfilInvalidoException(p.id(), "el margen de encabezado debe estar entre 0 y 5");
+        }
         if (p.columnaDe(p.campoClave()).isEmpty()) {
             throw new PerfilInvalidoException(p.id(), "el campo clave '" + p.campoClave() + "' no está mapeado");
+        }
+        if (p.campoCategoria() != null
+                && formato.campo(p.campoCategoria()).filter(c -> c.tipo() == TipoDato.TEXTO).isEmpty()) {
+            throw new PerfilInvalidoException(p.id(), "el campo de categoría '" + p.campoCategoria() + "' no es un texto del formato");
         }
         List<String> calculados = new ArrayList<>();
         for (ReglaCalculo r : p.reglas()) {

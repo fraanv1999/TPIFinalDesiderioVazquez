@@ -32,7 +32,7 @@ final class Calculadora {
                 yield numero(regla.base(), valores, formato).divide(v, MathContext.DECIMAL64);
             }
             case SUMAR_CAMPO -> numero(regla.base(), valores, formato).add(numero(regla.secundario(), valores, formato));
-            case CONCATENAR -> texto(valores.get(regla.base())) + texto(valores.get(regla.secundario()));
+            case CONCATENAR -> concatenar(valores.get(regla.base()), valores.get(regla.secundario()));
         };
     }
 
@@ -45,9 +45,15 @@ final class Calculadora {
         throw new ValorInvalidoException("falta " + etiqueta(campo, formato) + " para el cálculo");
     }
 
+    /** Une con un espacio, salteando los vacíos. Si ambos están vacíos, el resultado queda vacío. */
+    private static String concatenar(Object base, Object secundario) {
+        String unido = (texto(base) + " " + texto(secundario)).strip();
+        return unido.isEmpty() ? null : unido;
+    }
+
     private static String texto(Object valor) {
         if (valor == null) return "";
-        return valor instanceof BigDecimal n ? n.toPlainString() : valor.toString();
+        return valor instanceof BigDecimal n ? n.toPlainString() : valor.toString().strip();
     }
 
     private static String etiqueta(String campo, FormatoDestino formato) {
