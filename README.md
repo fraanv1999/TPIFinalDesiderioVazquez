@@ -75,7 +75,11 @@ cd backend
 | --- | --- | --- |
 | `GET` | `/api/perfiles` | Lista los perfiles |
 | `GET` | `/api/perfiles/{id}` | Perfil completo: columnas, transformaciones y reglas |
-| `POST` | `/api/importaciones/preview` | Vista previa. Multipart con `perfil` (id, por ejemplo `1` = Ferretería LSTPRE) y `archivo` |
+| `POST` | `/api/importaciones/preview` | Vista previa: procesa y guarda la importación. Multipart con `perfil` (id, por ejemplo `1` = Ferretería LSTPRE) y `archivo` |
+| `GET` | `/api/importaciones` | Historial, las más nuevas primero |
+| `GET` | `/api/importaciones/{id}` | Importación completa: diferencias, resumen y filas |
+| `POST` | `/api/importaciones/{id}/confirmar` | Confirma una vista previa (409 si no está en `PREVIEW` o no tiene filas válidas) |
+| `POST` | `/api/importaciones/{id}/cancelar` | Descarta una vista previa |
 
 Los perfiles se leen de la base (los cinco de `seed.sql`).
 

@@ -71,12 +71,32 @@ export interface CodigoRepetido {
   filas: number[];
 }
 
+export type EstadoImportacion = 'PREVIEW' | 'CONFIRMADA' | 'CANCELADA' | 'RECHAZADA';
+
 export interface ResultadoImportacion {
+  /** Id de la importación guardada. */
+  id: number;
   perfil: number;
   archivo: string;
-  estado: 'PREVIEW' | 'RECHAZADA';
+  estado: EstadoImportacion;
   diferencias: Diferencia[];
   resumen: Resumen;
   repetidos?: CodigoRepetido[];
   filas: FilaResultado[];
+}
+
+/** Una fila del historial. */
+export interface ImportacionResumen {
+  id: number;
+  perfilId: number;
+  perfil: string;
+  proveedor: string;
+  archivo: string;
+  estado: EstadoImportacion;
+  validas: number;
+  ignoradas: number;
+  errores: number;
+  usuario: string;
+  /** ISO 8601 */
+  creadoEn: string;
 }

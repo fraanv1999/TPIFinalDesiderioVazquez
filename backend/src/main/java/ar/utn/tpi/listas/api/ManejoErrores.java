@@ -6,14 +6,16 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 import ar.utn.tpi.listas.excel.ArchivoInvalidoException;
+import ar.utn.tpi.listas.importacion.EstadoInvalidoException;
+import ar.utn.tpi.listas.importacion.ImportacionNoEncontradaException;
 import ar.utn.tpi.listas.perfil.PerfilInvalidoException;
 import ar.utn.tpi.listas.perfil.PerfilNoEncontradoException;
 
 @RestControllerAdvice
 public class ManejoErrores {
 
-    @ExceptionHandler(PerfilNoEncontradoException.class)
-    ProblemDetail perfilNoEncontrado(PerfilNoEncontradoException e) {
+    @ExceptionHandler({PerfilNoEncontradoException.class, ImportacionNoEncontradaException.class})
+    ProblemDetail noEncontrado(RuntimeException e) {
         return ProblemDetail.forStatusAndDetail(HttpStatus.NOT_FOUND, e.getMessage());
     }
 
@@ -25,5 +27,10 @@ public class ManejoErrores {
     @ExceptionHandler(ArchivoInvalidoException.class)
     ProblemDetail archivoInvalido(ArchivoInvalidoException e) {
         return ProblemDetail.forStatusAndDetail(HttpStatus.BAD_REQUEST, e.getMessage());
+    }
+
+    @ExceptionHandler(EstadoInvalidoException.class)
+    ProblemDetail estadoInvalido(EstadoInvalidoException e) {
+        return ProblemDetail.forStatusAndDetail(HttpStatus.CONFLICT, e.getMessage());
     }
 }

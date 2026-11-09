@@ -64,7 +64,8 @@ erDiagram
                             tipo_diferencia tipo
                             boolean bloqueante
                             varchar esperado
-                            varchar encontrado }
+                            varchar encontrado
+                            varchar mensaje }
     FILA_IMPORTADA { bigint id PK
                      int numero_fila
                      estado_fila estado
