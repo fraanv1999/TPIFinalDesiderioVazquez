@@ -2,6 +2,7 @@ package ar.utn.tpi.listas.api;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ProblemDetail;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
@@ -10,11 +11,15 @@ import ar.utn.tpi.listas.importacion.EstadoInvalidoException;
 import ar.utn.tpi.listas.importacion.ImportacionNoEncontradaException;
 import ar.utn.tpi.listas.perfil.PerfilInvalidoException;
 import ar.utn.tpi.listas.perfil.PerfilNoEncontradoException;
+import ar.utn.tpi.listas.proveedor.ProveedorEnUsoException;
+import ar.utn.tpi.listas.proveedor.ProveedorNoEncontradoException;
 
+/** Los errores llegan al frontend como ProblemDetail, con {@code detail} listo para mostrar. */
 @RestControllerAdvice
 public class ManejoErrores {
 
-    @ExceptionHandler({PerfilNoEncontradoException.class, ImportacionNoEncontradaException.class})
+    @ExceptionHandler({PerfilNoEncontradoException.class, ImportacionNoEncontradaException.class,
+            ProveedorNoEncontradoException.class})
     ProblemDetail noEncontrado(RuntimeException e) {
         return ProblemDetail.forStatusAndDetail(HttpStatus.NOT_FOUND, e.getMessage());
     }
@@ -29,8 +34,18 @@ public class ManejoErrores {
         return ProblemDetail.forStatusAndDetail(HttpStatus.BAD_REQUEST, e.getMessage());
     }
 
-    @ExceptionHandler(EstadoInvalidoException.class)
-    ProblemDetail estadoInvalido(EstadoInvalidoException e) {
+    @ExceptionHandler({EstadoInvalidoException.class, ProveedorEnUsoException.class})
+    ProblemDetail conflicto(RuntimeException e) {
         return ProblemDetail.forStatusAndDetail(HttpStatus.CONFLICT, e.getMessage());
+    }
+
+    /** Datos inválidos en el cuerpo: se informa el primer motivo. */
+    @ExceptionHandler(MethodArgumentNotValidException.class)
+    ProblemDetail datosInvalidos(MethodArgumentNotValidException e) {
+        String motivo = e.getBindingResult().getFieldErrors().stream()
+                .map(f -> f.getDefaultMessage())
+                .findFirst()
+                .orElse("Datos inválidos");
+        return ProblemDetail.forStatusAndDetail(HttpStatus.BAD_REQUEST, motivo);
     }
 }

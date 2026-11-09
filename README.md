@@ -73,6 +73,9 @@ cd backend
 
 | Método | Ruta | Qué hace |
 | --- | --- | --- |
+| `GET` | `/api/proveedores` | Proveedores con su cantidad de perfiles |
+| `POST` / `PUT` | `/api/proveedores`, `/api/proveedores/{id}` | Alta y edición: `{ "nombre": "...", "activo": true }` |
+| `DELETE` | `/api/proveedores/{id}` | Baja de un proveedor sin perfiles (si tiene, se desactiva) |
 | `GET` | `/api/perfiles` | Lista los perfiles |
 | `GET` | `/api/perfiles/{id}` | Perfil completo: columnas, transformaciones y reglas |
 | `POST` | `/api/importaciones/preview` | Vista previa: procesa y guarda la importación. Multipart con `perfil` (id, por ejemplo `1` = Ferretería LSTPRE) y `archivo` |
