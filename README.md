@@ -55,16 +55,19 @@ flowchart LR
 
 ### Base de datos
 
+Crear una base vacía en PostgreSQL:
+
 ```bash
-psql -d tpi_final -f database/schema.sql
-psql -d tpi_final -f database/seed.sql
+createdb tpi_final
 ```
+
+Al arrancar, el backend ejecuta `database/schema.sql` y `seed.sql` si la base no tiene tablas. La conexión se configura con `DB_HOST`, `DB_PORT`, `DB_NAME`, `DB_USER` y `DB_PASSWORD` (por defecto `localhost:5432/tpi_final`, usuario y clave `postgres`).
 
 ### Backend (requiere Java 17)
 
 ```bash
 cd backend
-./mvnw test             # pruebas, incluida la vista previa de LSTPRE
+./mvnw test             # pruebas (levantan un PostgreSQL embebido, no hace falta tenerlo instalado)
 ./mvnw spring-boot:run  # API en http://localhost:8080
 ```
 
