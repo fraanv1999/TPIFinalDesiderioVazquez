@@ -96,11 +96,13 @@ La conversión de moneda está fuera del alcance. Una hoja en dólares (por ejem
 | Prueba | Archivos | Qué comprueba |
 | --- | --- | --- |
 | Par original / corregido | Paint Roller 02/10 (original y corrección manual) | El resultado del motor coincide con la corrección hecha a mano |
-| Cálculos | Planillas corregidas de Kallay, Bulones y Matienzo | Las reglas de cada perfil dan los mismos valores que calculó Excel |
+| Cálculos | Planillas corregidas de Kallay, Bulones y Matienzo | Las reglas de cada perfil dan los mismos valores que calculó Excel. En Bulones, las filas 216 a 218 tienen el ingreso bruto escrito a mano sobre la fórmula: el motor las detecta como distintas |
 | Clasificación | `Lista Ferreteria 19 08.xlsx` | 1412 válidas, 180 títulos, 361 vacías, 0 errores |
 | Estructura | Versiones de LSTPRE, Fenix y Acindar | Detecta encabezados desplazados, columnas movidas y cambios de formato |
 
-Los Excel de clientes que no están en `dataset-example/` se leen desde una carpeta local (variable `DATASET_EXTERNO`). Si la carpeta no existe, esas pruebas se saltean.
+Además hay pruebas unitarias de conversión, cálculos, control de estructura y clasificación con datos armados en memoria.
+
+Los Excel de clientes que no están en `dataset-example/` se leen desde una carpeta local (variable `DATASET_EXTERNO`). Si la variable no está definida, esas pruebas se saltean.
 
 ## Plan
 
