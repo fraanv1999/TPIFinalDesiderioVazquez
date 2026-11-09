@@ -12,32 +12,14 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 
 import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.webmvc.test.autoconfigure.AutoConfigureMockMvc;
 import org.springframework.mock.web.MockMultipartFile;
-import org.springframework.test.context.DynamicPropertyRegistry;
-import org.springframework.test.context.DynamicPropertySource;
-import org.springframework.test.web.servlet.MockMvc;
 
 import com.jayway.jsonpath.JsonPath;
 
-import ar.utn.tpi.listas.BaseDePrueba;
-
-@SpringBootTest
-@AutoConfigureMockMvc
-class ImportacionesApiTest {
+class ImportacionesApiTest extends ApiTest {
 
     private static final Path PROVEEDORES = Path.of("..", "dataset-example", "dataset-providers");
     private static final Path ANTERIOR = Path.of("..", "dataset-example", "dataset-previous-platform");
-
-    @DynamicPropertySource
-    static void base(DynamicPropertyRegistry registro) {
-        BaseDePrueba.propiedades(registro);
-    }
-
-    @Autowired
-    MockMvc mvc;
 
     private long subir(long perfil, Path archivo) throws Exception {
         MockMultipartFile parte = new MockMultipartFile("archivo", archivo.getFileName().toString(),

@@ -1,8 +1,11 @@
 -- Datos de ejemplo: formatos destino y perfiles de los Excel reales.
 -- Cada proveedor tiene sus propios porcentajes: no se copian reglas de uno a otro.
 
+-- Usuarios de prueba (contraseñas en BCrypt): admin@tpi.local / admin123 y operador@tpi.local / operador123.
+-- Cambiarlas antes de usar el sistema con datos reales.
 INSERT INTO usuario (nombre, email, password_hash, rol)
-VALUES ('Administrador', 'admin@tpi.local', '<bcrypt>', 'ADMIN');
+VALUES ('Administrador', 'admin@tpi.local',    '$2y$10$uuB5lyT4jaJvkiAasSsbx.BUXdMHzZrVy0DpGjpkWr7/7ch8S6RdC', 'ADMIN'),
+       ('Operador',      'operador@tpi.local', '$2y$10$1PuCpGjOQihNR85DacxPz.UMV/wt/pCntKbff./oHujpCBu5iWysC', 'OPERADOR');
 
 
 INSERT INTO formato_destino (nombre) VALUES ('organizalo');

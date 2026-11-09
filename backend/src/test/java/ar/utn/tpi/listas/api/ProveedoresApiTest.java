@@ -8,29 +8,11 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.webmvc.test.autoconfigure.AutoConfigureMockMvc;
 import org.springframework.http.MediaType;
-import org.springframework.test.context.DynamicPropertyRegistry;
-import org.springframework.test.context.DynamicPropertySource;
-import org.springframework.test.web.servlet.MockMvc;
 
 import com.jayway.jsonpath.JsonPath;
 
-import ar.utn.tpi.listas.BaseDePrueba;
-
-@SpringBootTest
-@AutoConfigureMockMvc
-class ProveedoresApiTest {
-
-    @DynamicPropertySource
-    static void base(DynamicPropertyRegistry registro) {
-        BaseDePrueba.propiedades(registro);
-    }
-
-    @Autowired
-    MockMvc mvc;
+class ProveedoresApiTest extends ApiTest {
 
     private String crear(String json) throws Exception {
         return mvc.perform(post("/api/proveedores").contentType(MediaType.APPLICATION_JSON).content(json))
