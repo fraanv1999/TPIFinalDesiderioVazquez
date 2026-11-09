@@ -1,5 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react';
 import type { SeccionApp } from '../../types';
+import type { Usuario } from '../../api/tipos';
 
 interface ItemNav {
   id: SeccionApp;
@@ -73,6 +74,8 @@ const ITEMS_NAV: ItemNav[] = [
 interface LayoutProps {
   seccionActual: SeccionApp;
   onCambiarSeccion: (seccion: SeccionApp) => void;
+  usuario: Usuario;
+  onCerrarSesion: () => void;
   children: React.ReactNode;
 }
 
@@ -113,7 +116,7 @@ function ContenidoNav({
 const SELECTOR_FOCUSABLE =
   'a[href], button:not([disabled]), textarea:not([disabled]), input:not([disabled]), select:not([disabled]), [tabindex]:not([tabindex="-1"])';
 
-export default function Layout({ seccionActual, onCambiarSeccion, children }: LayoutProps) {
+export default function Layout({ seccionActual, onCambiarSeccion, usuario, onCerrarSesion, children }: LayoutProps) {
   const [menuAbierto, setMenuAbierto] = useState(false);
   const botonMenuRef = useRef<HTMLButtonElement>(null);
   const drawerRef = useRef<HTMLDivElement>(null);
@@ -243,6 +246,19 @@ export default function Layout({ seccionActual, onCambiarSeccion, children }: La
             <IconMenu />
           </button>
           <h1 className="text-base font-semibold text-slate-900 md:text-lg">{etiquetaActual}</h1>
+          <div className="ml-auto flex items-center gap-3">
+            <span className="hidden text-right text-xs leading-tight text-slate-500 sm:block">
+              <span className="block font-medium text-slate-800">{usuario.nombre}</span>
+              {usuario.rol === 'ADMIN' ? 'Administrador' : 'Operador'}
+            </span>
+            <button
+              type="button"
+              onClick={onCerrarSesion}
+              className="rounded-md border border-slate-300 px-3 py-1.5 text-xs font-medium text-slate-700 hover:bg-slate-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-600"
+            >
+              Salir
+            </button>
+          </div>
         </header>
 
         <main id="contenido-principal" className="px-4 py-6 md:px-8 md:py-8">

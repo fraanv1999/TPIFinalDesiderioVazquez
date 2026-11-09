@@ -1,5 +1,12 @@
 // Respuestas de la API del backend (ver backend/.../api y backend/.../motor).
 
+export interface Usuario {
+  id: number;
+  nombre: string;
+  email: string;
+  rol: 'ADMIN' | 'OPERADOR';
+}
+
 export interface PerfilResumen {
   id: number;
   proveedor: string;
