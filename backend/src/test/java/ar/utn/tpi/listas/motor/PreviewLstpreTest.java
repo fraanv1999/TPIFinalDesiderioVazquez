@@ -11,6 +11,9 @@ import java.nio.file.Path;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
+import org.springframework.jdbc.core.simple.JdbcClient;
+
+import ar.utn.tpi.listas.BaseDePrueba;
 import ar.utn.tpi.listas.perfil.RepositorioPerfiles;
 
 /** Corte vertical: la lista real de Ferretería (hoja LSTPRE) de punta a punta hasta la vista previa. */
@@ -18,13 +21,17 @@ class PreviewLstpreTest {
 
     private static final Path LSTPRE = Path.of("..", "dataset-example", "dataset-providers", "Lista Ferreteria 19 08.xlsx");
 
+    /** Perfil 1 de database/seed.sql. */
+    private static final long FERRETERIA_LSTPRE = 1;
+
     private static ResultadoImportacion resultado;
 
     @BeforeAll
     static void importar() throws IOException {
-        ServicioImportacion servicio = new ServicioImportacion(new RepositorioPerfiles());
+        ServicioImportacion servicio = new ServicioImportacion(
+                new RepositorioPerfiles(JdbcClient.create(BaseDePrueba.dataSource())));
         try (InputStream in = Files.newInputStream(LSTPRE)) {
-            resultado = servicio.preview("ferreteria-lstpre", "Lista Ferreteria 19 08.xlsx", in);
+            resultado = servicio.preview(FERRETERIA_LSTPRE, "Lista Ferreteria 19 08.xlsx", in);
         }
     }
 

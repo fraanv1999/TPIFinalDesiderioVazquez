@@ -16,6 +16,9 @@ import org.junit.jupiter.api.condition.EnabledIfEnvironmentVariable;
 
 import ar.utn.tpi.listas.excel.HojaExcel;
 import ar.utn.tpi.listas.excel.LectorExcel;
+import org.springframework.jdbc.core.simple.JdbcClient;
+
+import ar.utn.tpi.listas.BaseDePrueba;
 import ar.utn.tpi.listas.perfil.RepositorioPerfiles;
 
 /**
@@ -27,6 +30,8 @@ import ar.utn.tpi.listas.perfil.RepositorioPerfiles;
 class ParPaintRollerTest {
 
     private static final String HOJA = " Paint Roller ";
+    /** Perfil 2 de database/seed.sql. */
+    private static final long PAINT_ROLLER = 2;
 
     @Test
     void elMotorReproduceLaCorreccionManual() throws IOException {
@@ -37,7 +42,8 @@ class ParPaintRollerTest {
 
         ResultadoImportacion r;
         try (InputStream in = Files.newInputStream(original)) {
-            r = new ServicioImportacion(new RepositorioPerfiles()).preview("paint-roller", original.toString(), in);
+            r = new ServicioImportacion(new RepositorioPerfiles(JdbcClient.create(BaseDePrueba.dataSource())))
+                    .preview(PAINT_ROLLER, original.toString(), in);
         }
         HojaExcel manual;
         try (InputStream in = Files.newInputStream(corregido)) {

@@ -25,7 +25,7 @@ export default function AsistenteImportacion() {
   const [archivo, setArchivo] = useState<File | null>(null);
   const [perfiles, setPerfiles] = useState<PerfilResumen[]>([]);
   const [proveedor, setProveedor] = useState('');
-  const [perfilId, setPerfilId] = useState('');
+  const [perfilId, setPerfilId] = useState<number | null>(null);
   const [perfil, setPerfil] = useState<Perfil | null>(null);
   const [resultado, setResultado] = useState<ResultadoImportacion | null>(null);
   const [procesando, setProcesando] = useState(false);
@@ -45,7 +45,7 @@ export default function AsistenteImportacion() {
   }, []);
 
   useEffect(() => {
-    if (!perfilId) return;
+    if (perfilId === null) return;
     obtenerPerfil(perfilId)
       .then(setPerfil)
       .catch((e: Error) => setError(e.message));
@@ -62,7 +62,7 @@ export default function AsistenteImportacion() {
   const columnas = Object.keys(filas.find((f) => f.datosResultado)?.datosResultado ?? {});
 
   async function procesar() {
-    if (!archivo || !perfilId) return;
+    if (!archivo || perfilId === null) return;
     setProcesando(true);
     setError(null);
     try {
@@ -183,7 +183,7 @@ export default function AsistenteImportacion() {
                 value={proveedor}
                 onChange={(e) => {
                   setProveedor(e.target.value);
-                  setPerfilId(perfiles.find((p) => p.proveedor === e.target.value)?.id ?? '');
+                  setPerfilId(perfiles.find((p) => p.proveedor === e.target.value)?.id ?? null);
                 }}
                 className="mt-1 block w-full rounded-md border border-slate-300 bg-white p-2 text-sm shadow-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-600"
               >
@@ -197,8 +197,8 @@ export default function AsistenteImportacion() {
               <label htmlFor="select-perf" className="block text-xs font-semibold text-slate-700">Perfil de Importación</label>
               <select
                 id="select-perf"
-                value={perfilId}
-                onChange={(e) => setPerfilId(e.target.value)}
+                value={perfilId ?? ''}
+                onChange={(e) => setPerfilId(Number(e.target.value))}
                 className="mt-1 block w-full rounded-md border border-slate-300 bg-white p-2 text-sm shadow-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-600"
               >
                 {perfilesDelProveedor.map((p) => (
@@ -235,7 +235,7 @@ export default function AsistenteImportacion() {
             </button>
             <button
               type="button"
-              disabled={!perfilId || procesando}
+              disabled={perfilId === null || procesando}
               onClick={procesar}
               className="rounded-md bg-blue-600 px-4 py-2 text-sm font-semibold text-white shadow-sm hover:bg-blue-700 disabled:cursor-not-allowed disabled:bg-slate-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-600"
             >

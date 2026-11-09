@@ -23,7 +23,7 @@ public class ServicioImportacion {
         this.repositorio = repositorio;
     }
 
-    public ResultadoImportacion preview(String perfilId, String nombreArchivo, InputStream archivo) {
+    public ResultadoImportacion preview(long perfilId, String nombreArchivo, InputStream archivo) {
         Perfil perfil = repositorio.perfil(perfilId);
         LibroExcel libro = LectorExcel.leer(archivo, perfil.hoja());
         Estructura estructura = ControlEstructura.verificar(perfil, libro);

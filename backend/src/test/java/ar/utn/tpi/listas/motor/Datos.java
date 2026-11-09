@@ -37,7 +37,7 @@ final class Datos {
 
     /** Encabezados en la fila 2, datos desde la 3: A código, B nombre, C precio, D ignorada. */
     static Perfil perfil(int margen, String campoCategoria, List<ReglaCalculo> reglas) {
-        return new Perfil("prueba", "Proveedor", "Lista", "prueba", "Hoja1", 2, margen, 3, "codigo", campoCategoria,
+        return new Perfil(1, "Proveedor", "Lista", "prueba", "Hoja1", 2, margen, 3, "codigo", campoCategoria,
                 List.of(columna("A", "Código", "codigo", Transformacion.TRIM),
                         columna("B", "Descripción", "nombre", Transformacion.TRIM, Transformacion.RELLENAR_ABAJO),
                         columna("C", "Precio", "precio_costo", Transformacion.A_DECIMAL),

@@ -36,12 +36,12 @@ public class ImportacionController {
     }
 
     @GetMapping("/perfiles/{id}")
-    public Perfil perfil(@PathVariable String id) {
+    public Perfil perfil(@PathVariable long id) {
         return perfiles.perfil(id);
     }
 
     @PostMapping(path = "/importaciones/preview", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-    public ResultadoImportacion preview(@RequestParam String perfil, @RequestParam MultipartFile archivo) throws IOException {
+    public ResultadoImportacion preview(@RequestParam long perfil, @RequestParam MultipartFile archivo) throws IOException {
         try (InputStream in = archivo.getInputStream()) {
             return importaciones.preview(perfil, archivo.getOriginalFilename(), in);
         }

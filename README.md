@@ -75,9 +75,9 @@ cd backend
 | --- | --- | --- |
 | `GET` | `/api/perfiles` | Lista los perfiles |
 | `GET` | `/api/perfiles/{id}` | Perfil completo: columnas, transformaciones y reglas |
-| `POST` | `/api/importaciones/preview` | Vista previa. Multipart con `perfil` (por ejemplo `ferreteria-lstpre`) y `archivo` |
+| `POST` | `/api/importaciones/preview` | Vista previa. Multipart con `perfil` (id, por ejemplo `1` = Ferretería LSTPRE) y `archivo` |
 
-Por ahora los perfiles se leen de `backend/src/main/resources/perfiles` (reflejan `seed.sql`); pasan a la base de datos en el bloque 4.
+Los perfiles se leen de la base (los cinco de `seed.sql`).
 
 ### Frontend
 
@@ -89,4 +89,4 @@ npm install
 npm run dev
 ```
 
-Abrí `http://localhost:5173`. Las pantallas de **Perfiles** y **Asistente de importación** usan la API (subís un Excel real y ves la vista previa). Proveedores y el panel siguen con datos simulados hasta el bloque 4. Para otra URL del backend, copiá `.env.example` a `.env` y cambiá `VITE_API_URL`.
+Abrí `http://localhost:5173`. Las pantallas de **Perfiles** y **Asistente de importación** usan la API (subís un Excel real y ves la vista previa). Proveedores y el panel todavía usan datos simulados. Para otra URL del backend, copiá `.env.example` a `.env` y cambiá `VITE_API_URL`.

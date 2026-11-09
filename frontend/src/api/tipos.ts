@@ -1,7 +1,7 @@
 // Respuestas de la API del backend (ver backend/.../api y backend/.../motor).
 
 export interface PerfilResumen {
-  id: string;
+  id: number;
   proveedor: string;
   nombre: string;
   hoja: string;
@@ -25,7 +25,7 @@ export interface ReglaCalculo {
 }
 
 export interface Perfil {
-  id: string;
+  id: number;
   proveedor: string;
   nombre: string;
   formato: string;
@@ -72,7 +72,7 @@ export interface CodigoRepetido {
 }
 
 export interface ResultadoImportacion {
-  perfil: string;
+  perfil: number;
   archivo: string;
   estado: 'PREVIEW' | 'RECHAZADA';
   diferencias: Diferencia[];

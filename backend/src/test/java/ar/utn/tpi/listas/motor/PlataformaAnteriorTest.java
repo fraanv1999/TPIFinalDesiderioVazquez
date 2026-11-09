@@ -16,11 +16,15 @@ import java.util.TreeSet;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
 
+import org.springframework.jdbc.core.simple.JdbcClient;
+
+import ar.utn.tpi.listas.BaseDePrueba;
 import ar.utn.tpi.listas.perfil.RepositorioPerfiles;
 
 /**
  * Las planillas corregidas a mano en la plataforma anterior traen el costo (C) y, al lado, lo que
- * calculó Excel (D a G e I). Las reglas de cada perfil tienen que dar los mismos valores.
+ * calculó Excel (D a G e I). Perfiles 3 a 5 de database/seed.sql.
+ * Las reglas de cada perfil tienen que dar los mismos valores.
  * Bulones trae 5 filas que el motor rechaza a propósito: stock "10KG" (4) y un precio de costo 0.
  * Además, en las filas 216 a 218 la fórmula del ingreso bruto se pisó a mano con un número fijo
  * (D216 = 9700 con un costo de 10290): ahí el motor da distinto y el error es de la planilla.
@@ -38,14 +42,14 @@ class PlataformaAnteriorTest {
             "G", "costo_mas_iva",
             "I", "precio_venta");
 
-    private static final RepositorioPerfiles PERFILES = new RepositorioPerfiles();
+    private static final RepositorioPerfiles PERFILES = new RepositorioPerfiles(JdbcClient.create(BaseDePrueba.dataSource()));
 
-    @ParameterizedTest(name = "{0}")
+    @ParameterizedTest(name = "perfil {0}: {1}")
     @CsvSource({
-            "kallay-corregido,   KALLAYCORREGIDO.xlsx,             17,  0, ''",
-            "bulones-corregido,  LISTA BULONESCORRECION.2026.xlsx, 368, 5, '216 217 218'",
-            "matienzo-corregido, MATIENZO LISTACORRECCION.xlsx,    25,  0, ''"})
-    void lasReglasDanLoMismoQueExcel(String perfil, String archivo, int validas, int errores, String pisadasAMano)
+            "3, KALLAYCORREGIDO.xlsx,             17,  0, ''",
+            "4, LISTA BULONESCORRECION.2026.xlsx, 368, 5, '216 217 218'",
+            "5, MATIENZO LISTACORRECCION.xlsx,    25,  0, ''"})
+    void lasReglasDanLoMismoQueExcel(long perfil, String archivo, int validas, int errores, String pisadasAMano)
             throws IOException {
         ResultadoImportacion r;
         try (InputStream in = Files.newInputStream(CARPETA.resolve(archivo))) {
