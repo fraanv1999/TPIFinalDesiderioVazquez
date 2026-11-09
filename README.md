@@ -83,6 +83,7 @@ cd backend
 | `GET` | `/api/importaciones/{id}` | Importación completa: diferencias, resumen y filas |
 | `POST` | `/api/importaciones/{id}/confirmar` | Confirma una vista previa (409 si no está en `PREVIEW` o no tiene filas válidas) |
 | `POST` | `/api/importaciones/{id}/cancelar` | Descarta una vista previa |
+| `GET` | `/api/importaciones/{id}/exportar` | XLSX para Organizalo: filas válidas, columnas del formato destino, precios con 2 decimales. Solo de una importación confirmada |
 
 Los perfiles se leen de la base (los cinco de `seed.sql`).
 

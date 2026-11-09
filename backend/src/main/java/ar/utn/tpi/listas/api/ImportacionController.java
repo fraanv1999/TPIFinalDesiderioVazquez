@@ -2,9 +2,13 @@ package ar.utn.tpi.listas.api;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.nio.charset.StandardCharsets;
 import java.util.List;
 
+import org.springframework.http.ContentDisposition;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -13,6 +17,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
+import ar.utn.tpi.listas.exportacion.ArchivoExportado;
+import ar.utn.tpi.listas.exportacion.Exportaciones;
 import ar.utn.tpi.listas.importacion.ImportacionResumen;
 import ar.utn.tpi.listas.importacion.Importaciones;
 import ar.utn.tpi.listas.motor.ResultadoImportacion;
@@ -25,9 +31,11 @@ public class ImportacionController {
     private static final long USUARIO_PROVISORIO = 1;
 
     private final Importaciones importaciones;
+    private final Exportaciones exportaciones;
 
-    public ImportacionController(Importaciones importaciones) {
+    public ImportacionController(Importaciones importaciones, Exportaciones exportaciones) {
         this.importaciones = importaciones;
+        this.exportaciones = exportaciones;
     }
 
     /** Procesa el archivo y guarda la vista previa (o el rechazo, si la estructura no coincide). */
@@ -56,5 +64,19 @@ public class ImportacionController {
     @PostMapping("/{id}/cancelar")
     public ImportacionResumen cancelar(@PathVariable long id) {
         return importaciones.cancelar(id);
+    }
+
+    /** Archivo para el sistema destino. Solo de una importación confirmada. */
+    @GetMapping("/{id}/exportar")
+    public ResponseEntity<byte[]> exportar(@PathVariable long id) {
+        return descarga(exportaciones.archivoDestino(id));
+    }
+
+    private static ResponseEntity<byte[]> descarga(ArchivoExportado archivo) {
+        return ResponseEntity.ok()
+                .header(HttpHeaders.CONTENT_DISPOSITION,
+                        ContentDisposition.attachment().filename(archivo.nombre(), StandardCharsets.UTF_8).build().toString())
+                .contentType(MediaType.parseMediaType(ArchivoExportado.TIPO))
+                .body(archivo.contenido());
     }
 }
