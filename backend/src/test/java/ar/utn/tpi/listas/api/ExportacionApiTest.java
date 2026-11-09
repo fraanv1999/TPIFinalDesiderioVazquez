@@ -19,31 +19,13 @@ import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.ss.usermodel.WorkbookFactory;
 import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.webmvc.test.autoconfigure.AutoConfigureMockMvc;
 import org.springframework.mock.web.MockMultipartFile;
-import org.springframework.test.context.DynamicPropertyRegistry;
-import org.springframework.test.context.DynamicPropertySource;
-import org.springframework.test.web.servlet.MockMvc;
 
 import com.jayway.jsonpath.JsonPath;
 
-import ar.utn.tpi.listas.BaseDePrueba;
-
-@SpringBootTest
-@AutoConfigureMockMvc
-class ExportacionApiTest {
+class ExportacionApiTest extends ApiTest {
 
     private static final Path DATASET = Path.of("..", "dataset-example");
-
-    @DynamicPropertySource
-    static void base(DynamicPropertyRegistry registro) {
-        BaseDePrueba.propiedades(registro);
-    }
-
-    @Autowired
-    MockMvc mvc;
 
     private long subir(long perfil, String archivo) throws Exception {
         Path ruta = DATASET.resolve(archivo);

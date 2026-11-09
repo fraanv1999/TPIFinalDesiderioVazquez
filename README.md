@@ -71,10 +71,19 @@ cd backend
 ./mvnw spring-boot:run  # API en http://localhost:8080
 ```
 
+La API usa HTTP Basic (header `Authorization` en cada pedido). Usuarios de prueba del `seed.sql`:
+
+| Email | Contraseña | Rol |
+| --- | --- | --- |
+| `admin@tpi.local` | `admin123` | `ADMIN`: además administra proveedores |
+| `operador@tpi.local` | `operador123` | `OPERADOR`: importa y exporta |
+
 | Método | Ruta | Qué hace |
 | --- | --- | --- |
+| `GET` | `/api/salud` | Estado del servicio (sin login) |
+| `GET` | `/api/auth/yo` | Usuario autenticado; el frontend lo usa para validar el login |
 | `GET` | `/api/proveedores` | Proveedores con su cantidad de perfiles |
-| `POST` / `PUT` | `/api/proveedores`, `/api/proveedores/{id}` | Alta y edición: `{ "nombre": "...", "activo": true }` |
+| `POST` / `PUT` | `/api/proveedores`, `/api/proveedores/{id}` | Alta y edición (solo `ADMIN`): `{ "nombre": "...", "activo": true }` |
 | `DELETE` | `/api/proveedores/{id}` | Baja de un proveedor sin perfiles (si tiene, se desactiva) |
 | `GET` | `/api/perfiles` | Lista los perfiles |
 | `GET` | `/api/perfiles/{id}` | Perfil completo: columnas, transformaciones y reglas |

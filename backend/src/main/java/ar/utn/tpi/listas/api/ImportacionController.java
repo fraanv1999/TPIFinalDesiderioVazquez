@@ -9,6 +9,7 @@ import org.springframework.http.ContentDisposition;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -22,13 +23,11 @@ import ar.utn.tpi.listas.exportacion.Exportaciones;
 import ar.utn.tpi.listas.importacion.ImportacionResumen;
 import ar.utn.tpi.listas.importacion.Importaciones;
 import ar.utn.tpi.listas.motor.ResultadoImportacion;
+import ar.utn.tpi.listas.seguridad.UsuarioAutenticado;
 
 @RestController
 @RequestMapping("/api/importaciones")
 public class ImportacionController {
-
-    /** Usuario del seed. Se reemplaza por el usuario autenticado cuando se agrega el login. */
-    private static final long USUARIO_PROVISORIO = 1;
 
     private final Importaciones importaciones;
     private final Exportaciones exportaciones;
@@ -40,9 +39,10 @@ public class ImportacionController {
 
     /** Procesa el archivo y guarda la vista previa (o el rechazo, si la estructura no coincide). */
     @PostMapping(path = "/preview", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-    public ResultadoImportacion preview(@RequestParam long perfil, @RequestParam MultipartFile archivo) throws IOException {
+    public ResultadoImportacion preview(@RequestParam long perfil, @RequestParam MultipartFile archivo,
+                                        @AuthenticationPrincipal UsuarioAutenticado usuario) throws IOException {
         try (InputStream in = archivo.getInputStream()) {
-            return importaciones.preview(perfil, archivo.getOriginalFilename(), in, USUARIO_PROVISORIO);
+            return importaciones.preview(perfil, archivo.getOriginalFilename(), in, usuario.id());
         }
     }
 
