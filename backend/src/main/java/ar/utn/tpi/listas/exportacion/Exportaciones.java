@@ -6,8 +6,11 @@ import java.io.UncheckedIOException;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.text.Normalizer;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Locale;
+import java.util.TreeSet;
+import java.util.stream.Collectors;
 
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.CellStyle;
@@ -21,6 +24,9 @@ import org.springframework.stereotype.Service;
 import ar.utn.tpi.listas.importacion.EstadoInvalidoException;
 import ar.utn.tpi.listas.importacion.ImportacionResumen;
 import ar.utn.tpi.listas.importacion.Importaciones;
+import ar.utn.tpi.listas.motor.CodigoRepetido;
+import ar.utn.tpi.listas.motor.Diferencia;
+import ar.utn.tpi.listas.motor.ErrorCampo;
 import ar.utn.tpi.listas.motor.EstadoFila;
 import ar.utn.tpi.listas.motor.EstadoImportacion;
 import ar.utn.tpi.listas.motor.FilaResultado;
@@ -30,8 +36,9 @@ import ar.utn.tpi.listas.perfil.RepositorioPerfiles;
 import ar.utn.tpi.listas.perfil.TipoDato;
 
 /**
- * Genera el archivo para el sistema destino: solo las filas válidas de una importación confirmada y
- * solo los campos exportados del formato, en su orden. Los decimales se redondean recién acá.
+ * Genera el archivo para el sistema destino (solo las filas válidas de una importación confirmada y
+ * solo los campos exportados del formato, en su orden; los decimales se redondean recién acá) y el
+ * reporte de errores (filas rechazadas con su motivo, avisos de estructura y códigos repetidos).
  */
 @Service
 public class Exportaciones {
@@ -75,6 +82,73 @@ public class Exportaciones {
             }
             estilos.terminar(hoja, columnas.size());
             return new ArchivoExportado(nombre(cabecera, "") + ".xlsx", bytes(libro));
+        } catch (IOException e) {
+            throw new UncheckedIOException(e);
+        }
+    }
+
+    /**
+     * Hoja "Errores": una fila por fila rechazada, con el motivo y los datos tal como vinieron.
+     * Hoja "Avisos": diferencias de estructura y códigos repetidos. Sirve en cualquier estado.
+     */
+    public ArchivoExportado reporteErrores(long id) {
+        ImportacionResumen cabecera = importaciones.resumen(id);
+        ResultadoImportacion r = importaciones.detalle(id);
+        List<FilaResultado> conError = r.filas().stream().filter(f -> f.estado() == EstadoFila.ERROR).toList();
+        List<String> columnasExcel = conError.stream()
+                .flatMap(f -> f.datosCrudos().keySet().stream())
+                .collect(Collectors.toCollection(() -> new TreeSet<>(
+                        Comparator.comparingInt(String::length).thenComparing(Comparator.naturalOrder()))))
+                .stream().toList();
+
+        try (Workbook libro = new XSSFWorkbook()) {
+            Estilos estilos = new Estilos(libro);
+            Sheet errores = libro.createSheet("Errores");
+            Row encabezado = errores.createRow(0);
+            estilos.encabezado(encabezado.createCell(0), "Fila");
+            estilos.encabezado(encabezado.createCell(1), "Motivo");
+            for (int c = 0; c < columnasExcel.size(); c++) {
+                estilos.encabezado(encabezado.createCell(c + 2), columnasExcel.get(c));
+            }
+            int n = 1;
+            for (FilaResultado f : conError) {
+                Row fila = errores.createRow(n++);
+                fila.createCell(0).setCellValue(f.numeroFila());
+                fila.createCell(1).setCellValue(f.errores().stream().map(ErrorCampo::mensaje).collect(Collectors.joining("; ")));
+                for (int c = 0; c < columnasExcel.size(); c++) {
+                    Object valor = f.datosCrudos().get(columnasExcel.get(c));
+                    if (valor instanceof BigDecimal num) {
+                        fila.createCell(c + 2).setCellValue(num.doubleValue());
+                    } else if (valor != null) {
+                        fila.createCell(c + 2).setCellValue(valor.toString());
+                    }
+                }
+            }
+            estilos.terminar(errores, columnasExcel.size() + 2);
+            errores.setColumnWidth(1, 60 * 256);
+
+            Sheet avisos = libro.createSheet("Avisos");
+            Row encabezadoAvisos = avisos.createRow(0);
+            estilos.encabezado(encabezadoAvisos.createCell(0), "Tipo");
+            estilos.encabezado(encabezadoAvisos.createCell(1), "Bloquea");
+            estilos.encabezado(encabezadoAvisos.createCell(2), "Detalle");
+            n = 1;
+            for (Diferencia d : r.diferencias()) {
+                Row fila = avisos.createRow(n++);
+                fila.createCell(0).setCellValue(d.tipo().name());
+                fila.createCell(1).setCellValue(d.bloqueante() ? "Sí" : "No");
+                fila.createCell(2).setCellValue(d.mensaje());
+            }
+            for (CodigoRepetido c : r.repetidos()) {
+                Row fila = avisos.createRow(n++);
+                fila.createCell(0).setCellValue("CODIGO_REPETIDO");
+                fila.createCell(1).setCellValue("No");
+                fila.createCell(2).setCellValue(c.codigo() + " aparece en las filas "
+                        + c.filas().stream().map(String::valueOf).collect(Collectors.joining(", ")));
+            }
+            estilos.terminar(avisos, 2);
+            avisos.setColumnWidth(2, 90 * 256);
+            return new ArchivoExportado(nombre(cabecera, "-errores") + ".xlsx", bytes(libro));
         } catch (IOException e) {
             throw new UncheckedIOException(e);
         }

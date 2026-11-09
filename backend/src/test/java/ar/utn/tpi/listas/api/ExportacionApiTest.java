@@ -116,4 +116,30 @@ class ExportacionApiTest {
                 .andExpect(jsonPath("$.detail").value("La importación " + id
                         + " está PREVIEW: solo se exporta una importación confirmada"));
     }
+
+    @Test
+    void elReporteDeErroresTraeElMotivoYLaFilaOriginal() throws Exception {
+        long id = subir(4, "dataset-previous-platform/LISTA BULONESCORRECION.2026.xlsx");
+        mvc.perform(get("/api/importaciones/{id}/errores", id))
+                .andExpect(header().string("Content-Disposition", containsString("bulones-corregido-" + id + "-errores.xlsx")));
+        Sheet errores = descargar("/api/importaciones/{id}/errores", id);
+
+        assertThat(texto(errores.getRow(0), 0)).isEqualTo("Fila");
+        assertThat(texto(errores.getRow(0), 2)).isEqualTo("A");
+        assertThat(errores.getLastRowNum()).isEqualTo(5);
+        Row f148 = errores.getRow(1);
+        assertThat(texto(f148, 0)).isEqualTo("148");
+        assertThat(texto(f148, 1)).isEqualTo("stock: '10KG' no es un número entero");
+        assertThat(texto(f148, 2)).isEqualTo("F0144");
+    }
+
+    @Test
+    void unaImportacionRechazadaInformaLasDiferenciasEnAvisos() throws Exception {
+        long id = subir(1, "dataset-previous-platform/KALLAYCORREGIDO.xlsx");
+        byte[] xlsx = mvc.perform(get("/api/importaciones/{id}/errores", id)).andExpect(status().isOk())
+                .andReturn().getResponse().getContentAsByteArray();
+        Sheet avisos = WorkbookFactory.create(new ByteArrayInputStream(xlsx)).getSheet("Avisos");
+        assertThat(texto(avisos.getRow(1), 0)).isEqualTo("HOJA_INEXISTENTE");
+        assertThat(texto(avisos.getRow(1), 1)).isEqualTo("Sí");
+    }
 }

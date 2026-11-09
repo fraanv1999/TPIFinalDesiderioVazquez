@@ -72,6 +72,12 @@ public class ImportacionController {
         return descarga(exportaciones.archivoDestino(id));
     }
 
+    /** Filas rechazadas con su motivo, diferencias de estructura y códigos repetidos. En cualquier estado. */
+    @GetMapping("/{id}/errores")
+    public ResponseEntity<byte[]> errores(@PathVariable long id) {
+        return descarga(exportaciones.reporteErrores(id));
+    }
+
     private static ResponseEntity<byte[]> descarga(ArchivoExportado archivo) {
         return ResponseEntity.ok()
                 .header(HttpHeaders.CONTENT_DISPOSITION,
