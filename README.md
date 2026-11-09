@@ -55,26 +55,36 @@ flowchart LR
 
 ### Base de datos
 
+Crear una base vacía en PostgreSQL:
+
 ```bash
-psql -d tpi_final -f database/schema.sql
-psql -d tpi_final -f database/seed.sql
+createdb tpi_final
 ```
+
+Al arrancar, el backend ejecuta `database/schema.sql` y `seed.sql` si la base no tiene tablas. La conexión se configura con `DB_HOST`, `DB_PORT`, `DB_NAME`, `DB_USER` y `DB_PASSWORD` (por defecto `localhost:5432/tpi_final`, usuario y clave `postgres`).
 
 ### Backend (requiere Java 17)
 
 ```bash
 cd backend
-./mvnw test             # pruebas, incluida la vista previa de LSTPRE
+./mvnw test             # pruebas (levantan un PostgreSQL embebido, no hace falta tenerlo instalado)
 ./mvnw spring-boot:run  # API en http://localhost:8080
 ```
 
 | Método | Ruta | Qué hace |
 | --- | --- | --- |
+| `GET` | `/api/proveedores` | Proveedores con su cantidad de perfiles |
+| `POST` / `PUT` | `/api/proveedores`, `/api/proveedores/{id}` | Alta y edición: `{ "nombre": "...", "activo": true }` |
+| `DELETE` | `/api/proveedores/{id}` | Baja de un proveedor sin perfiles (si tiene, se desactiva) |
 | `GET` | `/api/perfiles` | Lista los perfiles |
 | `GET` | `/api/perfiles/{id}` | Perfil completo: columnas, transformaciones y reglas |
-| `POST` | `/api/importaciones/preview` | Vista previa. Multipart con `perfil` (por ejemplo `ferreteria-lstpre`) y `archivo` |
+| `POST` | `/api/importaciones/preview` | Vista previa: procesa y guarda la importación. Multipart con `perfil` (id, por ejemplo `1` = Ferretería LSTPRE) y `archivo` |
+| `GET` | `/api/importaciones` | Historial, las más nuevas primero |
+| `GET` | `/api/importaciones/{id}` | Importación completa: diferencias, resumen y filas |
+| `POST` | `/api/importaciones/{id}/confirmar` | Confirma una vista previa (409 si no está en `PREVIEW` o no tiene filas válidas) |
+| `POST` | `/api/importaciones/{id}/cancelar` | Descarta una vista previa |
 
-Por ahora los perfiles se leen de `backend/src/main/resources/perfiles` (reflejan `seed.sql`); pasan a la base de datos en el bloque 4.
+Los perfiles se leen de la base (los cinco de `seed.sql`).
 
 ### Frontend
 
@@ -86,4 +96,4 @@ npm install
 npm run dev
 ```
 
-Abrí `http://localhost:5173`. Las pantallas de **Perfiles** y **Asistente de importación** usan la API (subís un Excel real y ves la vista previa). Proveedores y el panel siguen con datos simulados hasta el bloque 4. Para otra URL del backend, copiá `.env.example` a `.env` y cambiá `VITE_API_URL`.
+Abrí `http://localhost:5173`. Las pantallas de **Perfiles** y **Asistente de importación** usan la API (subís un Excel real y ves la vista previa). Proveedores y el panel todavía usan datos simulados. Para otra URL del backend, copiá `.env.example` a `.env` y cambiá `VITE_API_URL`.

@@ -25,13 +25,13 @@ export function obtenerPerfiles(): Promise<PerfilResumen[]> {
   return pedir('/api/perfiles');
 }
 
-export function obtenerPerfil(id: string): Promise<Perfil> {
-  return pedir(`/api/perfiles/${encodeURIComponent(id)}`);
+export function obtenerPerfil(id: number): Promise<Perfil> {
+  return pedir(`/api/perfiles/${id}`);
 }
 
-export function previsualizar(perfilId: string, archivo: File): Promise<ResultadoImportacion> {
+export function previsualizar(perfilId: number, archivo: File): Promise<ResultadoImportacion> {
   const formulario = new FormData();
-  formulario.append('perfil', perfilId);
+  formulario.append('perfil', String(perfilId));
   formulario.append('archivo', archivo);
   return pedir('/api/importaciones/preview', { method: 'POST', body: formulario });
 }

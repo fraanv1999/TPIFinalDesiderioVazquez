@@ -115,7 +115,8 @@ CREATE TABLE diferencia_estructura (
     bloqueante     BOOLEAN         NOT NULL,  -- ENCABEZADO_DESPLAZADO es solo un aviso
     columna_excel  VARCHAR(3),      -- NULL si es HOJA_INEXISTENTE
     esperado       VARCHAR(150),    -- "PRECIO"
-    encontrado     VARCHAR(150)     -- "PRECIO U$S" o la columna donde apareció
+    encontrado     VARCHAR(150),    -- "PRECIO U$S" o la columna donde apareció
+    mensaje        VARCHAR(500) NOT NULL  -- texto que se muestra al usuario
 );
 
 CREATE TABLE fila_importada (

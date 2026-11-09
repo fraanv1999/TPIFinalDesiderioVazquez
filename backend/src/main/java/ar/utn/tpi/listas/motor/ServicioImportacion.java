@@ -23,22 +23,22 @@ public class ServicioImportacion {
         this.repositorio = repositorio;
     }
 
-    public ResultadoImportacion preview(String perfilId, String nombreArchivo, InputStream archivo) {
+    public ResultadoImportacion preview(long perfilId, String nombreArchivo, InputStream archivo) {
         Perfil perfil = repositorio.perfil(perfilId);
         LibroExcel libro = LectorExcel.leer(archivo, perfil.hoja());
         Estructura estructura = ControlEstructura.verificar(perfil, libro);
         if (estructura.bloqueada()) {
-            return new ResultadoImportacion(perfil.id(), nombreArchivo, EstadoImportacion.RECHAZADA,
+            return new ResultadoImportacion(null, perfil.id(), nombreArchivo, EstadoImportacion.RECHAZADA,
                     estructura.diferencias(), new Resumen(0, 0, 0, 0, 0), List.of(), List.of());
         }
         List<FilaResultado> filas = MotorTransformacion.procesar(perfil, repositorio.formatoDe(perfil),
                 libro.hoja().orElseThrow(), perfil.filaInicioDatos() + estructura.desplazamiento());
-        return new ResultadoImportacion(perfil.id(), nombreArchivo, EstadoImportacion.PREVIEW,
+        return new ResultadoImportacion(null, perfil.id(), nombreArchivo, EstadoImportacion.PREVIEW,
                 estructura.diferencias(), Resumen.de(filas), repetidos(filas, perfil.campoClave()), filas);
     }
 
     /** Valores del campo clave que aparecen en más de una fila válida. */
-    private static List<CodigoRepetido> repetidos(List<FilaResultado> filas, String campoClave) {
+    public static List<CodigoRepetido> repetidos(List<FilaResultado> filas, String campoClave) {
         Map<String, List<Integer>> porCodigo = new LinkedHashMap<>();
         for (FilaResultado f : filas) {
             if (f.estado() == EstadoFila.VALIDA) {

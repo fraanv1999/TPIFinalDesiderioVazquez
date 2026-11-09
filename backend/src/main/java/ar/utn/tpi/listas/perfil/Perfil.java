@@ -10,7 +10,7 @@ import java.util.Optional;
  * texto de las filas título (ver docs/modulos.md, "Clasificación de filas").
  * {@code margenEncabezado} acepta los encabezados hasta esa cantidad de filas más arriba o más abajo.
  */
-public record Perfil(String id,
+public record Perfil(long id,
                      String proveedor,
                      String nombre,
                      String formato,
