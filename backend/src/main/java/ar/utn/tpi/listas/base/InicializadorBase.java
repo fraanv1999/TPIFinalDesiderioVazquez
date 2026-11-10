@@ -45,8 +45,11 @@ public class InicializadorBase implements InitializingBean {
             return false;
         }
         log.info("Base vacía: se ejecutan schema.sql y seed.sql");
-        new ResourceDatabasePopulator(new ClassPathResource("db/schema.sql"), new ClassPathResource("db/seed.sql"))
-                .execute(dataSource);
+        ResourceDatabasePopulator scripts = new ResourceDatabasePopulator(
+                new ClassPathResource("db/schema.sql"), new ClassPathResource("db/seed.sql"));
+        // Los .sql están en UTF-8; sin esto, en Windows se leen como Cp1252 y los acentos se rompen.
+        scripts.setSqlScriptEncoding("UTF-8");
+        scripts.execute(dataSource);
         return true;
     }
 }
