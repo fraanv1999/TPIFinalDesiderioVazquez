@@ -8,7 +8,7 @@
 | --- | --- | --- | --- |
 | 1.ª — Propuesta y repositorio | Problema, alcance, tecnologías y repositorio | 30/08 | Presentada |
 | 2.ª — Diseño y módulos | [Base de datos](base-de-datos.md) y [módulos](modulos.md), aprobados por el tutor y el comité | 27/09 | Conforme con correcciones (29/09) |
-| Final | Código, base de datos, despliegue online, informe y video (en inglés) | 14/11 | Pendiente |
+| Final | Código, base de datos, despliegue online, informe y video (en inglés) | 14/11 | Código terminado; faltan despliegue, informe y video |
 | Defensa oral | Presentación ante el comité | Mesa de examen | Pendiente |
 
 ## Devolución del 15/08

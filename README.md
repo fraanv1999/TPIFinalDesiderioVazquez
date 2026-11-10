@@ -32,8 +32,9 @@ flowchart LR
 | Capa | Tecnología |
 | --- | --- |
 | Frontend | React + Tailwind (Render, static site) |
-| Backend | Java 17 + Spring Boot 4 + Apache POI (Render, Docker) |
+| Backend | Java 17 + Spring Boot 4 (Web, JDBC, Security) + Apache POI (Render, Docker) |
 | Base de datos | PostgreSQL (Render) |
+| Pruebas | JUnit 5 + AssertJ + MockMvc, con PostgreSQL embebido |
 
 ## Documentación
 
@@ -98,6 +99,15 @@ La API usa HTTP Basic (header `Authorization` en cada pedido). Usuarios de prueb
 | `GET` | `/api/importaciones/{id}/errores` | XLSX con las filas rechazadas (motivo y datos originales) y los avisos: diferencias de estructura y códigos repetidos |
 
 Los perfiles se leen de la base (los cinco de `seed.sql`).
+
+### Pruebas
+
+```bash
+cd backend
+./mvnw test
+```
+
+Incluyen pruebas unitarias del motor, pruebas de referencia contra los Excel de `dataset-example/` y pruebas de la API. La comparación con la corrección manual de Paint Roller usa archivos del cliente que no están en el repo: se corre definiendo `DATASET_EXTERNO` con la carpeta que los contiene; si no está, se saltea.
 
 ### Frontend
 

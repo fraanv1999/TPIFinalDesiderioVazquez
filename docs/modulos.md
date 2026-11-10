@@ -106,13 +106,21 @@ Los Excel de clientes que no están en `dataset-example/` se leen desde una carp
 
 ## Plan
 
-| Bloque | Trabajo |
-| --- | --- |
-| 1 | Correcciones del modelo y la documentación |
-| 2 | Backend: motor y endpoint de vista previa con LSTPRE |
-| 3 | Pruebas de referencia |
-| 4 | Persistencia en PostgreSQL, confirmación e historial |
-| 5 | Exportación del archivo y del reporte de errores |
-| 6 | Frontend conectado, login y despliegue en Render |
+| Bloque | Trabajo | Estado |
+| --- | --- | --- |
+| 1 | Correcciones del modelo y la documentación | Hecho |
+| 2 | Backend: motor y endpoint de vista previa con LSTPRE | Hecho |
+| 3 | Pruebas unitarias y de referencia | Hecho |
+| 4 | Persistencia en PostgreSQL, confirmación, historial y proveedores | Hecho |
+| 5 | Exportación del archivo y del reporte de errores | Hecho |
+| 6 | Login, frontend conectado y despliegue en Render | Hecho (falta crear los servicios en Render) |
+
+## Decisiones de implementación
+
+- **Acceso a datos con JDBC (`JdbcClient`), sin JPA.** El esquema usa tipos `ENUM`, arrays y `JSONB` de PostgreSQL; así `schema.sql` es la única definición de las tablas.
+- **Esquema automático.** Si la base está vacía, el backend ejecuta `schema.sql` y `seed.sql` al arrancar.
+- **Orden de los campos.** `JSONB` no conserva el orden de las claves: al leer una importación, los campos se ordenan según el formato destino.
+- **Redondeo solo al exportar.** El motor conserva la precisión completa; el archivo final sale con 2 decimales.
+- **Login con HTTP Basic y contraseñas BCrypt.** Sin sesión en el servidor. Cualquier usuario activo importa y exporta; solo un `ADMIN` administra proveedores.
 
 **Fuera del alcance:** multitenancy, stock, ventas y conversión de monedas o unidades.
