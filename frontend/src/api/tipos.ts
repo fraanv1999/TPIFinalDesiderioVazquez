@@ -7,6 +7,19 @@ export interface Usuario {
   rol: 'ADMIN' | 'OPERADOR';
 }
 
+export interface Proveedor {
+  id: number;
+  nombre: string;
+  activo: boolean;
+  /** Cantidad de perfiles de importación. Con 0 se puede borrar. */
+  perfiles: number;
+}
+
+export interface DatosProveedor {
+  nombre: string;
+  activo: boolean;
+}
+
 export interface PerfilResumen {
   id: number;
   proveedor: string;

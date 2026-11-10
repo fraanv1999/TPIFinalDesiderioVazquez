@@ -1,0 +1,50 @@
+# Despliegue en Render (Blueprint): PostgreSQL + API (Docker) + frontend (static site).
+# Si Render asigna otras URLs, actualizar CORS_ORIGENES y VITE_API_URL con las que muestre el panel.
+
+databases:
+  - name: tpi-final-db
+    databaseName: tpi_final
+    user: tpi
+    plan: free
+
+services:
+  - type: web
+    name: tpi-final-api
+    runtime: docker
+    dockerfilePath: ./backend/Dockerfile
+    dockerContext: .
+    plan: free
+    healthCheckPath: /api/salud
+    envVars:
+      - key: DB_HOST
+        fromDatabase:
+          name: tpi-final-db
+          property: host
+      - key: DB_PORT
+        fromDatabase:
+          name: tpi-final-db
+          property: port
+      - key: DB_NAME
+        fromDatabase:
+          name: tpi-final-db
+          property: database
+      - key: DB_USER
+        fromDatabase:
+          name: tpi-final-db
+          property: user
+      - key: DB_PASSWORD
+        fromDatabase:
+          name: tpi-final-db
+          property: password
+      - key: CORS_ORIGENES
+        value: https://tpi-final-web.onrender.com
+
+  - type: web
+    name: tpi-final-web
+    runtime: static
+    rootDir: frontend
+    buildCommand: npm ci && npm run build
+    staticPublishPath: dist
+    envVars:
+      - key: VITE_API_URL
+        value: https://tpi-final-api.onrender.com

@@ -48,7 +48,9 @@ flowchart LR
 ├── database/          scripts SQL (schema.sql, seed.sql)
 ├── dataset-example/   Excels reales de proveedores y de la plataforma anterior
 ├── frontend/          frontend React + Tailwind (Vite), conectado a la API
-└── docs/              documentación
+├── docs/              documentación
+├── docker-compose.yml PostgreSQL + backend en local
+└── render.yaml        despliegue en Render
 ```
 
 ## Instalación
@@ -107,4 +109,22 @@ npm install
 npm run dev
 ```
 
-Abrí `http://localhost:5173`. Las pantallas de **Perfiles** y **Asistente de importación** usan la API (subís un Excel real y ves la vista previa). Proveedores y el panel todavía usan datos simulados. Para otra URL del backend, copiá `.env.example` a `.env` y cambiá `VITE_API_URL`.
+Abrí `http://localhost:5173` e ingresá con uno de los usuarios de prueba. Todas las pantallas usan la API. Para otra URL del backend, copiá `.env.example` a `.env` y cambiá `VITE_API_URL`.
+
+### Con Docker
+
+Levanta PostgreSQL y el backend juntos, sin instalar Java ni PostgreSQL:
+
+```bash
+docker compose up --build   # API en http://localhost:8080
+```
+
+El frontend se corre igual que arriba.
+
+## Despliegue en Render
+
+`render.yaml` define la base PostgreSQL, la API (imagen de `backend/Dockerfile`) y el frontend como static site.
+
+1. En Render: **New → Blueprint** y elegir este repositorio.
+2. Al terminar, revisar las URLs que asignó Render. Si no son `tpi-final-api.onrender.com` y `tpi-final-web.onrender.com`, actualizar `CORS_ORIGENES` (API) y `VITE_API_URL` (frontend) y volver a desplegar.
+3. La base se crea vacía: en el primer arranque la API ejecuta `schema.sql` y `seed.sql`.
