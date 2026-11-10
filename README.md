@@ -107,4 +107,4 @@ npm install
 npm run dev
 ```
 
-Abrí `http://localhost:5173`. Las pantallas de **Perfiles** y **Asistente de importación** usan la API (subís un Excel real y ves la vista previa). Proveedores y el panel todavía usan datos simulados. Para otra URL del backend, copiá `.env.example` a `.env` y cambiá `VITE_API_URL`.
+Abrí `http://localhost:5173` e ingresá con uno de los usuarios de prueba. Todas las pantallas usan la API. Para otra URL del backend, copiá `.env.example` a `.env` y cambiá `VITE_API_URL`.

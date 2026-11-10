@@ -1,17 +1,38 @@
-import { PROVEEDORES, PERFILES_IMPORTACION, IMPORTACIONES } from '../../data/mockData';
+import { useEffect, useState } from 'react';
+import { obtenerHistorial, obtenerPerfiles, obtenerProveedores } from '../../api/cliente';
+import type { ImportacionResumen, PerfilResumen, Proveedor } from '../../api/tipos';
 import type { SeccionApp } from '../../types';
+import EstadoImportacion, { formatearFecha } from '../../components/ui/EstadoImportacion';
 
 interface DashboardProps {
   onIrASeccion: (seccion: SeccionApp) => void;
 }
 
 export default function Dashboard({ onIrASeccion }: DashboardProps) {
-  const proveedoresActivos = PROVEEDORES.filter((p) => p.estado === 'activo').length;
-  const perfilesActivos = PERFILES_IMPORTACION.filter((p) => p.activo).length;
-  const ultimaImportacion = [...IMPORTACIONES].sort((a, b) => (a.fecha < b.fecha ? 1 : -1))[0];
+  const [proveedores, setProveedores] = useState<Proveedor[]>([]);
+  const [perfiles, setPerfiles] = useState<PerfilResumen[]>([]);
+  const [historial, setHistorial] = useState<ImportacionResumen[]>([]);
+  const [error, setError] = useState<string | null>(null);
+
+  useEffect(() => {
+    Promise.all([obtenerProveedores(), obtenerPerfiles(), obtenerHistorial()])
+      .then(([prov, perf, hist]) => {
+        setProveedores(prov);
+        setPerfiles(perf);
+        setHistorial(hist);
+      })
+      .catch((e: Error) => setError(e.message));
+  }, []);
+
+  const proveedoresActivos = proveedores.filter((p) => p.activo).length;
+  // El historial viene ordenado de la más nueva a la más vieja.
+  const ultima = historial[0];
+  const recientes = historial.slice(0, 8);
 
   return (
     <div className="space-y-6">
+      {error && <p role="alert" className="rounded-md border border-red-200 bg-red-50 p-3 text-sm text-red-700">{error}</p>}
+
       {/* Tarjetas de Métricas */}
       <div className="grid grid-cols-1 gap-4 sm:grid-cols-3">
         <div className="rounded-lg border border-slate-200 bg-white p-5 shadow-sm">
@@ -22,13 +43,13 @@ export default function Dashboard({ onIrASeccion }: DashboardProps) {
             onClick={() => onIrASeccion('proveedores')}
             className="mt-3 text-xs font-medium text-blue-700 hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-600 rounded"
           >
-            Administrar proveedores →
+            Ver proveedores →
           </button>
         </div>
 
         <div className="rounded-lg border border-slate-200 bg-white p-5 shadow-sm">
           <p className="text-xs font-semibold uppercase tracking-wider text-slate-500">Perfiles configurados</p>
-          <p className="mt-2 text-3xl font-semibold text-slate-900">{perfilesActivos}</p>
+          <p className="mt-2 text-3xl font-semibold text-slate-900">{perfiles.length}</p>
           <button
             type="button"
             onClick={() => onIrASeccion('perfiles')}
@@ -40,16 +61,16 @@ export default function Dashboard({ onIrASeccion }: DashboardProps) {
 
         <div className="rounded-lg border border-slate-200 bg-white p-5 shadow-sm">
           <p className="text-xs font-semibold uppercase tracking-wider text-slate-500">Última importación</p>
-          <p className="mt-2 text-xl font-semibold text-slate-900">{ultimaImportacion?.fecha ?? '—'}</p>
-          <p className="mt-1 text-xs text-slate-500 truncate">{ultimaImportacion?.archivoNombre}</p>
+          <p className="mt-2 text-xl font-semibold text-slate-900">{ultima ? formatearFecha(ultima.creadoEn) : '—'}</p>
+          <p className="mt-1 text-xs text-slate-500 truncate">{ultima?.archivo}</p>
         </div>
       </div>
 
       {/* Acceso Rápido al Wizard */}
       <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 rounded-lg border border-blue-200 bg-blue-50/60 p-5">
         <div>
-          <h2 className="text-base font-semibold text-slate-900">¿Tienes una lista nueva para procesar?</h2>
-          <p className="text-sm text-slate-600">Inicia el asistente para cargar el archivo Excel y transformarlo al formato del sistema.</p>
+          <h2 className="text-base font-semibold text-slate-900">¿Tenés una lista nueva para procesar?</h2>
+          <p className="text-sm text-slate-600">Iniciá el asistente para cargar el Excel y transformarlo al formato del sistema.</p>
         </div>
         <button
           type="button"
@@ -63,7 +84,7 @@ export default function Dashboard({ onIrASeccion }: DashboardProps) {
       {/* Historial Reciente */}
       <div className="rounded-lg border border-slate-200 bg-white shadow-sm">
         <div className="border-b border-slate-200 px-5 py-4">
-          <h2 className="text-sm font-semibold text-slate-900">Historial reciente de transformaciones</h2>
+          <h2 className="text-sm font-semibold text-slate-900">Importaciones recientes</h2>
         </div>
         <div className="overflow-x-auto">
           <table className="min-w-full divide-y divide-slate-200 text-sm">
@@ -78,24 +99,17 @@ export default function Dashboard({ onIrASeccion }: DashboardProps) {
               </tr>
             </thead>
             <tbody className="divide-y divide-slate-100">
-              {IMPORTACIONES.map((imp) => (
+              {recientes.length === 0 && (
+                <tr><td colSpan={6} className="px-4 py-6 text-center text-slate-500">Todavía no hay importaciones.</td></tr>
+              )}
+              {recientes.map((imp) => (
                 <tr key={imp.id} className="hover:bg-slate-50/70">
-                  <td className="px-4 py-3 text-slate-600 whitespace-nowrap">{imp.fecha}</td>
-                  <td className="px-4 py-3 font-medium text-slate-900">{imp.proveedorNombre}</td>
-                  <td className="px-4 py-3 text-slate-600 font-mono text-xs">{imp.archivoNombre}</td>
-                  <td className="px-4 py-3 text-right font-medium text-emerald-700">{imp.filasValidas}</td>
-                  <td className="px-4 py-3 text-right font-medium text-rose-700">{imp.filasError}</td>
-                  <td className="px-4 py-3 text-center">
-                    <span
-                      className={`inline-flex rounded-full px-2 py-0.5 text-xs font-semibold ${
-                        imp.estado === 'completado'
-                          ? 'bg-emerald-50 text-emerald-700 border border-emerald-200'
-                          : 'bg-amber-50 text-amber-800 border border-amber-200'
-                      }`}
-                    >
-                      {imp.estado === 'completado' ? 'Sin errores' : 'Con errores'}
-                    </span>
-                  </td>
+                  <td className="px-4 py-3 text-slate-600 whitespace-nowrap">{formatearFecha(imp.creadoEn)}</td>
+                  <td className="px-4 py-3 font-medium text-slate-900">{imp.proveedor}</td>
+                  <td className="px-4 py-3 text-slate-600 font-mono text-xs">{imp.archivo}</td>
+                  <td className="px-4 py-3 text-right font-medium text-emerald-700">{imp.validas}</td>
+                  <td className="px-4 py-3 text-right font-medium text-rose-700">{imp.errores}</td>
+                  <td className="px-4 py-3 text-center"><EstadoImportacion estado={imp.estado} /></td>
                 </tr>
               ))}
             </tbody>

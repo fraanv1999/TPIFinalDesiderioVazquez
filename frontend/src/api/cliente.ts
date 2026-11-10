@@ -1,4 +1,12 @@
-import type { Perfil, PerfilResumen, ResultadoImportacion, Usuario } from './tipos';
+import type {
+  DatosProveedor,
+  ImportacionResumen,
+  Perfil,
+  PerfilResumen,
+  Proveedor,
+  ResultadoImportacion,
+  Usuario,
+} from './tipos';
 import { autorizacion, autorizacionBasic, cerrarSesion, guardarSesion } from './sesion';
 
 /** URL del backend. En Render se define VITE_API_URL al construir el sitio. */
@@ -39,6 +47,28 @@ export async function iniciarSesion(email: string, contrasena: string): Promise<
   const usuario = (await respuesta.json()) as Usuario;
   guardarSesion(auth, usuario);
   return usuario;
+}
+
+export function obtenerProveedores(): Promise<Proveedor[]> {
+  return pedir('/api/proveedores');
+}
+
+const JSON_HEADERS = { 'Content-Type': 'application/json' };
+
+export function crearProveedor(datos: DatosProveedor): Promise<Proveedor> {
+  return pedir('/api/proveedores', { method: 'POST', headers: JSON_HEADERS, body: JSON.stringify(datos) });
+}
+
+export function editarProveedor(id: number, datos: DatosProveedor): Promise<Proveedor> {
+  return pedir(`/api/proveedores/${id}`, { method: 'PUT', headers: JSON_HEADERS, body: JSON.stringify(datos) });
+}
+
+export function borrarProveedor(id: number): Promise<void> {
+  return pedir(`/api/proveedores/${id}`, { method: 'DELETE' });
+}
+
+export function obtenerHistorial(): Promise<ImportacionResumen[]> {
+  return pedir('/api/importaciones');
 }
 
 export function obtenerPerfiles(): Promise<PerfilResumen[]> {

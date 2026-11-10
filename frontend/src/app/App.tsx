@@ -23,13 +23,14 @@ export default function App() {
   if (!usuario) {
     return <Login onIngresar={setUsuario} />;
   }
+  const esAdmin = usuario.rol === 'ADMIN';
 
   function renderizarSeccion() {
     switch (seccionActual) {
       case 'dashboard':
         return <Dashboard onIrASeccion={setSeccionActual} />;
       case 'proveedores':
-        return <Proveedores />;
+        return <Proveedores puedeEditar={esAdmin} />;
       case 'perfiles':
         return <PerfilesImportacion />;
       case 'asistente':
