@@ -8,6 +8,7 @@ import Dashboard from '../features/dashboard/Dashboard';
 import Proveedores from '../features/proveedores/Proveedores';
 import PerfilesImportacion from '../features/perfiles/PerfilesImportacion';
 import AsistenteImportacion from '../features/asistente/AsistenteImportacion';
+import Historial from '../features/historial/Historial';
 
 export default function App() {
   const [usuario, setUsuario] = useState<Usuario | null>(usuarioGuardado);
@@ -35,6 +36,8 @@ export default function App() {
         return <PerfilesImportacion />;
       case 'asistente':
         return <AsistenteImportacion />;
+      case 'historial':
+        return <Historial />;
       default:
         return null;
     }

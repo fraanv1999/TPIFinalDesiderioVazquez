@@ -48,6 +48,15 @@ function IconAsistente() {
   );
 }
 
+function IconHistorial() {
+  return (
+    <svg viewBox="0 0 20 20" fill="none" aria-hidden="true" className="h-5 w-5">
+      <circle cx="10" cy="10" r="7" stroke="currentColor" strokeWidth="1.5" />
+      <path d="M10 6v4l2.5 2.5" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+    </svg>
+  );
+}
+
 function IconMenu() {
   return (
     <svg viewBox="0 0 20 20" fill="none" aria-hidden="true" className="h-6 w-6">
@@ -69,6 +78,7 @@ const ITEMS_NAV: ItemNav[] = [
   { id: 'proveedores', etiqueta: 'Proveedores', icono: <IconProveedores /> },
   { id: 'perfiles', etiqueta: 'Perfiles de importación', icono: <IconPerfiles /> },
   { id: 'asistente', etiqueta: 'Asistente de importación', icono: <IconAsistente /> },
+  { id: 'historial', etiqueta: 'Historial', icono: <IconHistorial /> },
 ];
 
 interface LayoutProps {

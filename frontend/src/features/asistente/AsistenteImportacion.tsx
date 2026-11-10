@@ -1,5 +1,13 @@
 import { useEffect, useMemo, useState } from 'react';
-import { obtenerPerfil, obtenerPerfiles, previsualizar } from '../../api/cliente';
+import {
+  cancelarImportacion,
+  confirmarImportacion,
+  descargarErrores,
+  descargarExportacion,
+  obtenerPerfil,
+  obtenerPerfiles,
+  previsualizar,
+} from '../../api/cliente';
 import type { FilaResultado, Perfil, PerfilResumen, ResultadoImportacion } from '../../api/tipos';
 
 type Filtro = 'todas' | 'validas' | 'errores' | 'ignoradas';
@@ -74,6 +82,43 @@ export default function AsistenteImportacion() {
     } finally {
       setProcesando(false);
     }
+  }
+
+  /** Corre una acción contra la API mostrando su error, si lo hay. */
+  async function intentar(accion: () => Promise<void>) {
+    setProcesando(true);
+    setError(null);
+    try {
+      await accion();
+    } catch (e) {
+      setError((e as Error).message);
+    } finally {
+      setProcesando(false);
+    }
+  }
+
+  function reiniciar() {
+    setPaso(1);
+    setArchivo(null);
+    setResultado(null);
+    setFiltroVista('todas');
+  }
+
+  function confirmar() {
+    if (!resultado) return;
+    intentar(async () => {
+      const confirmada = await confirmarImportacion(resultado.id);
+      setResultado({ ...resultado, estado: confirmada.estado });
+      setPaso(4);
+    });
+  }
+
+  function descartar() {
+    if (!resultado) return;
+    intentar(async () => {
+      await cancelarImportacion(resultado.id);
+      reiniciar();
+    });
   }
 
   return (
@@ -262,13 +307,21 @@ export default function AsistenteImportacion() {
               </li>
             ))}
           </ul>
-          <div className="flex justify-start pt-4">
+          <div className="flex justify-between pt-4">
             <button
               type="button"
               onClick={() => setPaso(2)}
               className="rounded-md border border-slate-300 bg-white px-4 py-2 text-sm font-medium text-slate-700 hover:bg-slate-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-slate-400"
             >
               ← Revisar perfil
+            </button>
+            <button
+              type="button"
+              disabled={procesando}
+              onClick={() => intentar(() => descargarErrores(resultado.id))}
+              className="rounded-md border border-rose-300 bg-white px-4 py-2 text-sm font-medium text-rose-700 hover:bg-rose-50 disabled:opacity-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-rose-400"
+            >
+              Descargar reporte
             </button>
           </div>
         </div>
@@ -393,13 +446,25 @@ export default function AsistenteImportacion() {
             >
               ← Revisar perfil
             </button>
-            <button
-              type="button"
-              onClick={() => setPaso(4)}
-              className="rounded-md bg-blue-600 px-4 py-2 text-sm font-semibold text-white shadow-sm hover:bg-blue-700 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-600"
-            >
-              Confirmar e Ir a Exportación →
-            </button>
+            <div className="flex gap-3">
+              <button
+                type="button"
+                disabled={procesando}
+                onClick={descartar}
+                className="rounded-md border border-slate-300 bg-white px-4 py-2 text-sm font-medium text-slate-700 hover:bg-slate-50 disabled:opacity-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-slate-400"
+              >
+                Descartar
+              </button>
+              <button
+                type="button"
+                disabled={procesando || resultado.resumen.validas === 0}
+                title={resultado.resumen.validas === 0 ? 'No hay filas válidas para confirmar' : undefined}
+                onClick={confirmar}
+                className="rounded-md bg-blue-600 px-4 py-2 text-sm font-semibold text-white shadow-sm hover:bg-blue-700 disabled:cursor-not-allowed disabled:opacity-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-600"
+              >
+                Confirmar e ir a exportación →
+              </button>
+            </div>
           </div>
         </div>
       )}
@@ -408,7 +473,7 @@ export default function AsistenteImportacion() {
       {paso === 4 && resultado && (
         <div className="rounded-lg border border-slate-200 bg-white p-6 shadow-sm space-y-6 text-center">
           <div className="max-w-md mx-auto">
-            <h2 className="text-lg font-semibold text-slate-900">Resumen de la importación</h2>
+            <h2 className="text-lg font-semibold text-slate-900">Importación {resultado.id} confirmada</h2>
             <p className="mt-1 text-xs text-slate-500">
               Se leyeron {filas.length} filas de {resultado.archivo}. {resultado.resumen.validas} filas válidas quedan listas para el
               sistema destino.
@@ -421,11 +486,11 @@ export default function AsistenteImportacion() {
               <p className="text-xs text-slate-500 mt-1">{resultado.resumen.validas} artículos transformados</p>
               <button
                 type="button"
-                disabled
-                title="La exportación todavía no está disponible en la API"
-                className="mt-3 w-full rounded bg-slate-300 px-3 py-1.5 text-xs font-semibold text-white cursor-not-allowed"
+                disabled={procesando}
+                onClick={() => intentar(() => descargarExportacion(resultado.id))}
+                className="mt-3 w-full rounded bg-emerald-600 px-3 py-1.5 text-xs font-semibold text-white hover:bg-emerald-700 disabled:opacity-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-emerald-600"
               >
-                Descargar Excel Destino (próximamente)
+                Descargar Excel para Organizalo
               </button>
             </div>
 
@@ -434,11 +499,11 @@ export default function AsistenteImportacion() {
               <p className="text-xs text-slate-500 mt-1">{resultado.resumen.errores} filas con inconsistencias</p>
               <button
                 type="button"
-                disabled
-                title="La exportación todavía no está disponible en la API"
-                className="mt-3 w-full rounded bg-slate-300 px-3 py-1.5 text-xs font-semibold text-white cursor-not-allowed"
+                disabled={procesando}
+                onClick={() => intentar(() => descargarErrores(resultado.id))}
+                className="mt-3 w-full rounded bg-rose-600 px-3 py-1.5 text-xs font-semibold text-white hover:bg-rose-700 disabled:opacity-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-rose-600"
               >
-                Descargar Reporte (próximamente)
+                Descargar reporte de errores
               </button>
             </div>
           </div>
@@ -446,12 +511,7 @@ export default function AsistenteImportacion() {
           <div className="pt-4 border-t border-slate-100">
             <button
               type="button"
-              onClick={() => {
-                setPaso(1);
-                setArchivo(null);
-                setResultado(null);
-                setFiltroVista('todas');
-              }}
+              onClick={reiniciar}
               className="text-xs font-semibold text-blue-700 hover:underline focus-visible:ring-2 focus-visible:ring-blue-600 rounded px-2 py-1"
             >
               ← Comenzar una nueva importación

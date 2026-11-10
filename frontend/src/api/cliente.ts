@@ -71,6 +71,42 @@ export function obtenerHistorial(): Promise<ImportacionResumen[]> {
   return pedir('/api/importaciones');
 }
 
+export function confirmarImportacion(id: number): Promise<ImportacionResumen> {
+  return pedir(`/api/importaciones/${id}/confirmar`, { method: 'POST' });
+}
+
+export function cancelarImportacion(id: number): Promise<ImportacionResumen> {
+  return pedir(`/api/importaciones/${id}/cancelar`, { method: 'POST' });
+}
+
+/** XLSX para el sistema destino (solo de una importación confirmada). */
+export function descargarExportacion(id: number): Promise<void> {
+  return descargar(`/api/importaciones/${id}/exportar`, `importacion-${id}.xlsx`);
+}
+
+/** XLSX con las filas rechazadas y los avisos. */
+export function descargarErrores(id: number): Promise<void> {
+  return descargar(`/api/importaciones/${id}/errores`, `importacion-${id}-errores.xlsx`);
+}
+
+/**
+ * Las descargas también necesitan el header Authorization, así que no alcanza con un <a href>:
+ * se pide el archivo con fetch y se descarga desde un enlace temporal.
+ */
+async function descargar(ruta: string, nombrePorDefecto: string): Promise<void> {
+  const respuesta = await enviar(ruta);
+  const disposicion = respuesta.headers.get('Content-Disposition') ?? '';
+  const nombre = /filename="([^"]+)"/.exec(disposicion)?.[1] ?? nombrePorDefecto;
+  const url = URL.createObjectURL(await respuesta.blob());
+  const enlace = document.createElement('a');
+  enlace.href = url;
+  enlace.download = nombre;
+  document.body.appendChild(enlace);
+  enlace.click();
+  enlace.remove();
+  URL.revokeObjectURL(url);
+}
+
 export function obtenerPerfiles(): Promise<PerfilResumen[]> {
   return pedir('/api/perfiles');
 }
