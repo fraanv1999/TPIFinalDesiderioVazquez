@@ -31,9 +31,9 @@ flowchart LR
 
 | Capa | Tecnología |
 | --- | --- |
-| Frontend | React + Tailwind (Render, static site) |
-| Backend | Java 17 + Spring Boot 4 (Web, JDBC, Security) + Apache POI (Render, Docker) |
-| Base de datos | PostgreSQL (Render) |
+| Frontend | React + Tailwind (Railway) |
+| Backend | Java 17 + Spring Boot 4 (Web, JDBC, Security) + Apache POI (Railway, Docker) |
+| Base de datos | PostgreSQL (Railway) |
 | Pruebas | JUnit 5 + AssertJ + MockMvc, con PostgreSQL embebido |
 
 ## Documentación
@@ -51,7 +51,8 @@ flowchart LR
 ├── frontend/          frontend React + Tailwind (Vite), conectado a la API
 ├── docs/              documentación
 ├── docker-compose.yml PostgreSQL + backend en local
-└── render.yaml        despliegue en Render
+├── railway.json       despliegue de la API en Railway
+└── render.yaml        despliegue alternativo en Render
 ```
 
 ## Instalación
@@ -131,10 +132,24 @@ docker compose up --build   # API en http://localhost:8080
 
 El frontend se corre igual que arriba.
 
-## Despliegue en Render
+## Despliegue en Railway
 
-`render.yaml` define la base PostgreSQL, la API (imagen de `backend/Dockerfile`) y el frontend como static site.
+`railway.json` hace que Railway construya la API con `backend/Dockerfile` (desde la raíz del repo, porque el jar incluye `database/*.sql`) y revise `/api/salud` para saber si arrancó.
 
-1. En Render: **New → Blueprint** y elegir este repositorio.
-2. Al terminar, revisar las URLs que asignó Render. Si no son `tpi-final-api.onrender.com` y `tpi-final-web.onrender.com`, actualizar `CORS_ORIGENES` (API) y `VITE_API_URL` (frontend) y volver a desplegar.
-3. La base se crea vacía: en el primer arranque la API ejecuta `schema.sql` y `seed.sql`.
+1. **Base de datos:** en el proyecto de Railway, **+ Create → Database → PostgreSQL**.
+2. **API:** **+ Create → GitHub Repo** con este repositorio, con *Root Directory* `/`. En **Variables**:
+   ```
+   DB_HOST=${{Postgres.PGHOST}}
+   DB_PORT=${{Postgres.PGPORT}}
+   DB_NAME=${{Postgres.PGDATABASE}}
+   DB_USER=${{Postgres.PGUSER}}
+   DB_PASSWORD=${{Postgres.PGPASSWORD}}
+   CORS_ORIGENES=https://<dominio-del-frontend>
+   ```
+   El puerto no se configura: Railway define `PORT` y la API lo usa. En **Settings → Networking → Generate Domain** se obtiene la URL pública.
+3. **Frontend:** otro servicio desde el mismo repositorio, con *Root Directory* `frontend`, *Config File Path* `/frontend/railway.json` (si no, toma el `railway.json` de la API) y la variable `VITE_API_URL=https://<dominio-de-la-api>`. Railway construye el sitio con Vite y lo sirve como estático. Generar su dominio y ponerlo en `CORS_ORIGENES` de la API.
+4. La base se crea vacía: en el primer arranque la API ejecuta `schema.sql` y `seed.sql`.
+
+Si la API termina con `Connection refused`, faltan las variables `DB_*` o el servicio de PostgreSQL no se llama `Postgres` (el nombre tiene que coincidir con el de las referencias `${{...}}`).
+
+`render.yaml` queda como alternativa para desplegar en Render (**New → Blueprint**).
