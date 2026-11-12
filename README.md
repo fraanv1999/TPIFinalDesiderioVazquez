@@ -176,7 +176,7 @@ El frontend se corre igual que arriba.
 
 ### Frontend en Railway
 
-`frontend/railway.json` hace que Railway construya el sitio con Vite (`npm run build`) y lo sirva como estático.
+`frontend/railway.json` hace que Railway (Railpack) instale las dependencias, construya el sitio con Vite (`npm run build`) y lo sirva como estático.
 
 1. En el mismo proyecto: **+ Create → GitHub Repository** y elegir este repositorio.
 2. En el servicio nuevo, **Settings**:
