@@ -7,10 +7,10 @@ Importador de listas de precios de proveedores. Trabajo Integrador Final de la T
 | Recurso | Enlace |
 | --- | --- |
 | Sistema desplegado (API) | https://tpifinaldesideriovazquez-production.up.railway.app/api/salud |
-| Frontend desplegado | _pendiente_. Mientras tanto se corre en local (ver [Frontend](#frontend)) |
+| Frontend desplegado | https://wonderful-vibrancy-production-e02e7fc2.up.railway.app |
 | Informe Final (PDF) | [docs/informe-final.pdf](docs/informe-final.pdf) |
 | Video de presentación | _pendiente_ |
-| Versión entregada | tag `v1.0` |
+| Versión entregada | tag `v1.0-entrega-final` |
 
 **Cuenta de demostración:** `operador@tpi.local` / `operador123`, o `admin@tpi.local` / `admin123` para administrar proveedores. Son los usuarios de prueba de `seed.sql`, no credenciales reales.
 
@@ -62,6 +62,7 @@ flowchart LR
 ## Documentación
 
 - [Informe Final (PDF)](docs/informe-final.pdf)
+- [Prueba del sistema desplegado](docs/prueba-sistema-desplegado.md): recorrido con capturas y todas las versiones reales de Ferretería y Paint Roller
 - [Base de datos](docs/base-de-datos.md)
 - [Módulos](docs/modulos.md)
 - [Entregas y devoluciones](docs/entregas.md)
@@ -71,7 +72,7 @@ flowchart LR
 ```
 ├── backend/           API REST y motor de transformación (Spring Boot)
 ├── database/          scripts SQL (schema.sql, seed.sql)
-├── dataset-example/   Excels reales de proveedores y de la plataforma anterior
+├── dataset-example/   Excels reales de proveedores, de la plataforma anterior y versiones de cada lista
 ├── frontend/          frontend React + Tailwind (Vite), conectado a la API
 ├── docs/              documentación
 ├── docker-compose.yml PostgreSQL + backend en local
@@ -132,7 +133,7 @@ cd backend
 ./mvnw test
 ```
 
-Incluyen pruebas unitarias del motor, pruebas de referencia contra los Excel de `dataset-example/` y pruebas de la API. La comparación con la corrección manual de Paint Roller usa archivos del cliente que no están en el repo: se corre definiendo `DATASET_EXTERNO` con la carpeta que los contiene; si no está, se saltea.
+Incluyen pruebas unitarias del motor, pruebas de referencia contra los Excel de `dataset-example/` y pruebas de la API. `VersionesListasTest` corre los perfiles de Ferretería y Paint Roller sobre todas las versiones reales que recibió el negocio (`dataset-example/dataset-versiones/`, una carpeta por fecha de recepción).
 
 ### Frontend
 

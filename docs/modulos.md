@@ -102,7 +102,7 @@ La conversión de moneda está fuera del alcance. Una hoja en dólares (por ejem
 
 Además hay pruebas unitarias de conversión, cálculos, control de estructura y clasificación con datos armados en memoria.
 
-Los Excel de clientes que no están en `dataset-example/` se leen desde una carpeta local (variable `DATASET_EXTERNO`). Si la variable no está definida, esas pruebas se saltean.
+Todos los Excel de las pruebas están en `dataset-example/`. Las versiones de las listas de Ferretería y Paint Roller, una carpeta por fecha de recepción, están en `dataset-example/dataset-versiones/`.
 
 ## Plan
 

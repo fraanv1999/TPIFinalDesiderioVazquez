@@ -1,7 +1,6 @@
 package ar.utn.tpi.listas.motor;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assumptions.assumeTrue;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -12,7 +11,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.condition.EnabledIfEnvironmentVariable;
 
 import ar.utn.tpi.listas.excel.HojaExcel;
 import ar.utn.tpi.listas.excel.LectorExcel;
@@ -24,9 +22,8 @@ import ar.utn.tpi.listas.perfil.RepositorioPerfiles;
 /**
  * Par original / corregido de Paint Roller (02/10). La corrección manual completó el nombre del grupo
  * en cada fila y le agregó la medida: el motor lo reproduce con RELLENAR_ABAJO y CONCATENAR.
- * Los archivos son de un cliente y no están en el repo: se leen de {@code DATASET_EXTERNO}.
+ * Los archivos están en {@code dataset-example/dataset-versiones/02-10-2026}.
  */
-@EnabledIfEnvironmentVariable(named = "DATASET_EXTERNO", matches = ".+")
 class ParPaintRollerTest {
 
     private static final String HOJA = " Paint Roller ";
@@ -35,10 +32,9 @@ class ParPaintRollerTest {
 
     @Test
     void elMotorReproduceLaCorreccionManual() throws IOException {
-        Path carpeta = Path.of(System.getenv("DATASET_EXTERNO"), "02-10-2026");
+        Path carpeta = Path.of("..", "dataset-example", "dataset-versiones", "02-10-2026");
         Path original = carpeta.resolve("Lista de precios Mayorista - PAINT ROLLER.xlsx");
         Path corregido = carpeta.resolve("Lista_de_precios_Mayorista_-_PAINT_ROLLER_CORRECION.xlsx");
-        assumeTrue(Files.exists(original) && Files.exists(corregido), "faltan los archivos del 02/10");
 
         ResultadoImportacion r;
         try (InputStream in = Files.newInputStream(original)) {
