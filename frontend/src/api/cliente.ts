@@ -9,7 +9,7 @@ import type {
 } from './tipos';
 import { autorizacion, autorizacionBasic, cerrarSesion, guardarSesion } from './sesion';
 
-/** URL del backend. En Render se define VITE_API_URL al construir el sitio. */
+/** URL del backend. En Railway se define VITE_API_URL al construir el sitio. */
 const API_URL = (import.meta.env.VITE_API_URL ?? 'http://localhost:8080').replace(/\/$/, '');
 
 /** Error de la API con el mensaje listo para mostrar al usuario. */

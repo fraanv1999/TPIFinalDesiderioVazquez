@@ -8,8 +8,10 @@
 | --- | --- | --- | --- |
 | 1.ª — Propuesta y repositorio | Problema, alcance, tecnologías y repositorio | 30/08 | Presentada |
 | 2.ª — Diseño y módulos | [Base de datos](base-de-datos.md) y [módulos](modulos.md), aprobados por el tutor y el comité | 27/09 | Conforme con correcciones (29/09) |
-| Final | Código, base de datos, despliegue online, informe y video (en inglés) | 14/11 | Código terminado; faltan despliegue, informe y video |
+| Final | Código, base de datos, despliegue online, informe y video | 14/11 | API y base desplegadas en Railway. Informe en [PDF](informe-final.pdf) |
 | Defensa oral | Presentación ante el comité | Mesa de examen | Pendiente |
+
+Lucas Desiderio participó en la 1.ª y la 2.ª entrega y después dejó el proyecto. La entrega final la hizo Franco Vazquez.
 
 ## Devolución del 15/08
 
@@ -57,4 +59,4 @@ Al revisar más listas reales de la ferretería (agosto a octubre) aparecieron c
 - LSTPRE trae los encabezados en la fila 7 o en la 8 según la versión: `margen_encabezado`.
 - Paint Roller pone el nombre del producto una vez por grupo, en celdas combinadas: `RELLENAR_ABAJO`.
 - Fenix arrastra fórmulas que dan 0 en filas sin producto: un 0 cuenta como vacío al clasificar.
-- El sistema destino real es el importador de productos de Organizalo: nuevo formato destino `organizalo`.
+- El sistema destino real es el importador de productos del sistema de gestión del negocio: nuevo formato destino `organizalo`.

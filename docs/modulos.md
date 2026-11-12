@@ -6,10 +6,10 @@
 
 ```mermaid
 flowchart LR
-    U([Usuario]) --> FE[Frontend<br/>React · Render static site]
-    FE --> API[API REST<br/>Spring Boot · Render web service]
-    API --> DB[(PostgreSQL<br/>Render)]
-    API --> X[Archivo XLSX<br/>para el sistema destino]
+    U([Usuario]) --> FE[Frontend<br/>React · Railway]
+    FE --> API[API REST<br/>Spring Boot · Railway, Docker]
+    API --> DB[(PostgreSQL<br/>Railway)]
+    API --> X[Archivo XLSX<br/>para el sistema de gestión]
 ```
 
 ## Listado
@@ -113,7 +113,7 @@ Los Excel de clientes que no están en `dataset-example/` se leen desde una carp
 | 3 | Pruebas unitarias y de referencia | Hecho |
 | 4 | Persistencia en PostgreSQL, confirmación, historial y proveedores | Hecho |
 | 5 | Exportación del archivo y del reporte de errores | Hecho |
-| 6 | Login, frontend conectado y despliegue en Render | Hecho (falta crear los servicios en Render) |
+| 6 | Login, frontend conectado y despliegue en Railway | Hecho: API y base desplegadas |
 
 ## Decisiones de implementación
 

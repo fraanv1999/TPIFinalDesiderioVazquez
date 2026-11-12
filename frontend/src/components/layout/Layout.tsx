@@ -197,11 +197,11 @@ export default function Layout({ seccionActual, onCambiarSeccion, usuario, onCer
       >
         <div className="flex h-16 items-center gap-2 border-b border-slate-700 px-4">
           <span className="flex h-8 w-8 items-center justify-center rounded bg-blue-600 text-sm font-semibold text-white">
-            IX
+            OR
           </span>
           <span className="text-sm font-semibold leading-tight text-white">
-            Importador de listas
-            <span className="block text-xs font-normal text-slate-400">Panel de gestión</span>
+            Organizalo
+            <span className="block text-xs font-normal text-slate-400">Importador de listas de precios</span>
           </span>
         </div>
         <div className="flex-1 overflow-y-auto">
@@ -226,7 +226,7 @@ export default function Layout({ seccionActual, onCambiarSeccion, usuario, onCer
             className="absolute inset-y-0 left-0 flex w-72 max-w-[85%] flex-col bg-slate-800 shadow-xl focus:outline-none"
           >
             <div className="flex h-16 items-center justify-between border-b border-slate-700 px-4">
-              <span className="text-sm font-semibold text-white">Importador de listas</span>
+              <span className="text-sm font-semibold text-white">Organizalo</span>
               <button
                 type="button"
                 onClick={() => setMenuAbierto(false)}

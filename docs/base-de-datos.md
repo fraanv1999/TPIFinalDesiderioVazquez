@@ -95,7 +95,7 @@ erDiagram
 
 | Formato | Uso |
 | --- | --- |
-| `organizalo` | Sistema destino: el importador de productos de Organizalo (Codigo, Nombre, Descripcion, Categoria, Stock, Precio, Ingresos brutos, Ganancia, IVA, Precio + IVA). `precio_costo` es auxiliar: se usa en los cálculos y no se exporta |
+| `organizalo` | Formato del importador de productos del sistema de gestión del negocio (Codigo, Nombre, Descripcion, Categoria, Stock, Precio, Ingresos brutos, Ganancia, IVA, Precio + IVA). `precio_costo` es auxiliar: se usa en los cálculos y no se exporta |
 | `plataforma_anterior` | Planilla que se completaba a mano. Se usa como referencia para comprobar los cálculos |
 
 ## Decisiones

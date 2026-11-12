@@ -490,7 +490,7 @@ export default function AsistenteImportacion() {
                 onClick={() => intentar(() => descargarExportacion(resultado.id))}
                 className="mt-3 w-full rounded bg-emerald-600 px-3 py-1.5 text-xs font-semibold text-white hover:bg-emerald-700 disabled:opacity-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-emerald-600"
               >
-                Descargar Excel para Organizalo
+                Descargar Excel para el sistema de gestión
               </button>
             </div>
 

@@ -30,10 +30,10 @@ export default function Login({ onIngresar }: LoginProps) {
       <div className="w-full max-w-sm rounded-lg border border-slate-200 bg-white p-6 shadow-sm">
         <div className="mb-6 flex items-center gap-2">
           <span className="flex h-9 w-9 items-center justify-center rounded bg-blue-600 text-sm font-semibold text-white">
-            IX
+            OR
           </span>
           <div>
-            <h1 className="text-base font-semibold text-slate-900">Importador de listas</h1>
+            <h1 className="text-base font-semibold text-slate-900">Organizalo</h1>
             <p className="text-xs text-slate-500">Ingresá con tu usuario</p>
           </div>
         </div>

@@ -43,7 +43,7 @@ export default function Historial() {
   return (
     <div className="space-y-4">
       <p className="text-sm text-slate-500">
-        Cada vista previa queda guardada. El archivo para Organizalo se descarga de las importaciones confirmadas; el
+        Cada vista previa queda guardada. El archivo para el sistema de gestión se descarga de las importaciones confirmadas; el
         reporte de errores, de cualquiera.
       </p>
 
