@@ -8,8 +8,8 @@ Importador de listas de precios de proveedores. Trabajo Integrador Final de la T
 | --- | --- |
 | Sistema desplegado (API) | https://tpifinaldesideriovazquez-production.up.railway.app/api/salud |
 | Frontend desplegado | https://wonderful-vibrancy-production-e02e7fc2.up.railway.app |
-| Informe Final (PDF) | [docs/informe-final.pdf](docs/informe-final.pdf) |
-| Video de presentación | _pendiente_ |
+| Informe Final (PDF) | [docs/informe-final.pdf](./docs/Vazquez-Franco-Informe-Final-TPI.pdf) |
+| Video de presentación | https://youtu.be/5Rmpc-3QwWc |
 | Versión entregada | tag `v1.0-entrega-final` |
 
 **Cuenta de demostración:** `operador@tpi.local` / `operador123`, o `admin@tpi.local` / `admin123` para administrar proveedores. Son los usuarios de prueba de `seed.sql`, no credenciales reales.
